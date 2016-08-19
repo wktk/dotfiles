@@ -1,4 +1,10 @@
 # aliases
+if [ "$(uname)" = "Darwin" ]; then
+  alias ls='ls -G'
+else
+  alias ls='ls --color=auto'
+fi
+
 alias bi='bundle install --path .bundle --binstubs .bundle/bin'
 alias bu='bundle update'
 alias dr='sudo killall -HUP mDNSResponder'
