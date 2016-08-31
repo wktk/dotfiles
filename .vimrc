@@ -19,4 +19,8 @@ Plug 'darfink/vim-plist'
 " https://github.com/tpope/vim-endwise
 Plug 'tpope/vim-endwise'
 
+" Map '%' to jump from one keyword to its corresponding 'end' in Ruby files.
+" http://www.vim.org/scripts/script.php?script_id=290
+Plug 'ruby-matchit'
+
 call plug#end()
