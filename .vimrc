@@ -10,9 +10,13 @@ set cursorline
 set cursorcolumn
 
 call plug#begin('~/.vim/plugged')
+
+" Add plist editing support to Vim
+" https://github.com/darfink/vim-plist
 Plug 'darfink/vim-plist'
 
 " wisely add "end" in ruby, endfunction/endif/more in vim script
 " https://github.com/tpope/vim-endwise
 Plug 'tpope/vim-endwise'
+
 call plug#end()
