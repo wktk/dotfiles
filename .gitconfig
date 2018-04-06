@@ -1,10 +1,7 @@
 [user]
 	email = k.wakitani@gmail.com
 	name = k.wakitani
-	signingkey = 120535F3D95535DF
 [push]
 	default = simple
-[commit]
-	gpgsign = true
-[gpg]
-	program = gpg
+[include]
+        path = ~/.gitconfig_local
