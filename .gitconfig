@@ -3,5 +3,7 @@
 	name = k.wakitani
 [push]
 	default = simple
+[core]
+	excludesfile = ~/.gitignore_global
 [include]
         path = ~/.gitconfig_local
