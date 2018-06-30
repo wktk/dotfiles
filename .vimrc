@@ -23,4 +23,12 @@ Plug 'tpope/vim-endwise'
 " http://www.vim.org/scripts/script.php?script_id=290
 Plug 'ruby-matchit'
 
+" HTML5 + inline SVG omnicomplete function, indent and syntax for Vim.
+" https://github.com/othree/html5.vim
+Plug 'othree/html5.vim'
+
+" Syntax highlight for Slim
+" https://github.com/slim-template/vim-slim
+Plug  'slim-template/vim-slim'
+
 call plug#end()
