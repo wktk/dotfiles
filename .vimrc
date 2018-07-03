@@ -20,8 +20,9 @@ Plug 'darfink/vim-plist'
 Plug 'tpope/vim-endwise'
 
 " Map '%' to jump from one keyword to its corresponding 'end' in Ruby files.
-" http://www.vim.org/scripts/script.php?script_id=290
-Plug 'ruby-matchit'
+" (Original) http://www.vim.org/scripts/script.php?script_id=290
+" https://github.com/stevemadere/ruby-matchit
+Plug 'stevemadere/ruby-matchit'
 
 " HTML5 + inline SVG omnicomplete function, indent and syntax for Vim.
 " https://github.com/othree/html5.vim
