@@ -5,6 +5,7 @@ DOTFILES="
   .gitconfig
   .profile
   .tmux.conf
+  .tmux-pbcopy.conf
   .vim
   .vimrc
 "
