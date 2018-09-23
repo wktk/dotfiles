@@ -47,7 +47,7 @@ function mkheroku() {
   echo "$result"
 
   # When error creating app
-  if [ "$(grep "already taken" <<< $result)" ]; then
+  if [[ "$result" =  *"already taken"* ]]; then
     # Remove directory and go back to $pwd
     cd "$pwd"
     rm -rf "$1"
