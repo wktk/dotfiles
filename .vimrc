@@ -8,6 +8,7 @@ set autoindent
 set encoding=utf-8
 set cursorline
 set cursorcolumn
+set backspace=indent,eol,start
 
 call plug#begin('~/.vim/plugged')
 
