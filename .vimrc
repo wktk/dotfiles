@@ -32,4 +32,10 @@ Plug 'othree/html5.vim'
 " https://github.com/slim-template/vim-slim
 Plug  'slim-template/vim-slim'
 
+" Markdown preview
+Plug 'previm/previm'
+
+" Open URI with browser
+Plug 'tyru/open-browser.vim'
+
 call plug#end()
