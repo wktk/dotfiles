@@ -15,6 +15,7 @@ alias lf='ls -lFh'
 alias ll='ls -laFh'
 alias sa='eval "$(ssh-agent)" && ssh-add'
 alias vi='vim'
+alias d='dig +noedns'
 
 # Heroku clone
 function hc() {
