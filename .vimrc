@@ -37,6 +37,9 @@ Plug  'slim-template/vim-slim'
 " Markdown preview
 Plug 'previm/previm'
 
+" JS Syntax highlight
+Plug 'othree/yajs.vim'
+
 " Open URI with browser
 Plug 'tyru/open-browser.vim'
 
