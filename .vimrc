@@ -42,4 +42,7 @@ Plug 'tyru/open-browser.vim'
 
 Plug 'kchmck/vim-coffee-script'
 
+" Asynchronous Lint Engine
+Plug 'w0rp/ale'
+
 call plug#end()
