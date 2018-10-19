@@ -40,4 +40,6 @@ Plug 'previm/previm'
 " Open URI with browser
 Plug 'tyru/open-browser.vim'
 
+Plug 'kchmck/vim-coffee-script'
+
 call plug#end()
