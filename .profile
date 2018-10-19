@@ -68,6 +68,17 @@ export PATH="./.bundle/bin:$PATH"
 # custom bin
 PATH="$HOME/.bin:$PATH"
 
+# history customize for tmux
+function share_history {
+  history -a
+  history -c
+  history -r
+}
+PROMPT_COMMAND='share_history'
+shopt -u histappend
+export HISTSIZE=99999
+export HISTFILESIZE=99999
+
 # init rbenv
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
