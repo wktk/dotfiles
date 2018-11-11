@@ -40,7 +40,6 @@ function mkheroku() {
     return 1
   fi
 
-  pwd="$(pwd)"
   mkgit "$1"
 
   # Create app
@@ -49,8 +48,7 @@ function mkheroku() {
 
   # When error creating app
   if [[ "$result" =  *"already taken"* ]]; then
-    # Remove directory and go back to $pwd
-    cd "$pwd"
+    cd -
     rm -rf "$1"
     echo " !    Removed $1"
   fi
