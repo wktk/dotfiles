@@ -1,10 +1,10 @@
 #!/bin/bash
 
 DOTFILES="
+  .bashrc
   .bin
   .gitconfig
   .oh-my-zsh
-  .profile
   .tmux.conf
   .tmux-pbcopy.conf
   .vim
