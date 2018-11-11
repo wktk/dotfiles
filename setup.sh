@@ -3,11 +3,13 @@
 DOTFILES="
   .bin
   .gitconfig
+  .oh-my-zsh
   .profile
   .tmux.conf
   .tmux-pbcopy.conf
   .vim
   .vimrc
+  .zshrc
 "
 
 for dotfile in $DOTFILES; do
