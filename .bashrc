@@ -57,14 +57,8 @@ function mkheroku() {
 # env vars
 export EDITOR="vim"
 
-# rbenv bin path
-export PATH="$HOME/.rbenv/bin:$PATH"
-
-# bundler bin path
-export PATH="./.bundle/bin:$PATH"
-
 # custom bin
-PATH="$HOME/.bin:$PATH"
+export PATH="$HOME/.bin:$HOME/go/bin:./.bundle/bin:$HOME/.rbenv/bin:$PATH"
 
 # init rbenv
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
