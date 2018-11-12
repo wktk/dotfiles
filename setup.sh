@@ -12,6 +12,10 @@ DOTFILES="
   .zshrc
 "
 
+RETIRED="
+  .profile
+"
+
 for dotfile in $DOTFILES; do
   if [ -h "$HOME/$dotfile" ]; then
     echo "Skip: $dotfile (already linked to somewhere)"
@@ -25,6 +29,13 @@ for dotfile in $DOTFILES; do
 
   ln -s "$(pwd)/$dotfile" "$HOME"
   echo "Created: $dotfile"
+done
+
+for retired in $RETIRED; do
+  if [ -h "$HOME/$retired" ]; then
+    echo "Archive: $HOME/$retired"
+    mv "$HOME/$retired" "$HOME/$retired.$(date +'%y%m%d%H%M%S').bak"
+  fi
 done
 
 echo "done."
