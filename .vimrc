@@ -48,4 +48,6 @@ Plug 'kchmck/vim-coffee-script'
 " Asynchronous Lint Engine
 Plug 'w0rp/ale'
 
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
 call plug#end()
