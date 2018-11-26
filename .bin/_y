@@ -1,0 +1,49 @@
+#!/usr/bin/env ruby
+require 'pp'
+
+p url = ARGV[0].strip
+
+format_raw = `youtube-dl "#{url}" -F`
+formats = format_raw.lines.map do |format|
+  next if format.start_with?(/\D/)
+  attrs = format.strip.split(/\s*,\s*/)
+  size_raw = attrs[0].split(/\s+/)
+  size = if size_raw[3].match?(/^\d+p\d*$/)
+    size_raw[3].split('p').map(&:to_i).sum * 1_000_000
+  else
+    size_raw[2].split('x').first.to_i
+  end
+  size += 1 if size_raw[1] == 'mp4'
+
+  [size_raw[0], {
+    type: size_raw[2] == 'audio' ? :audio : :video,
+    format: size_raw[1].sub('m4a', 'mp4'),
+    video_only: format.include?('video only'),
+    size: size,
+    bitrate: size_raw[6],
+    resolution: size_raw[2],
+  }]
+end.compact.to_h
+
+video_format = formats.select { |_, v| v[:type] == :video }.max do |other, format|
+  other[1][:size] <=> format[1][:size]
+end
+
+p video_format
+download_format = video_format[0].dup
+
+if video_format[1][:video_only]
+  audio_format = formats.select do |_, v|
+    v[:type] == :audio && video_format[1][:format] == v[:format]
+  end.max { |_, f| f[1][:bitrate].to_i }
+  p audio_format
+  download_format << '+' << audio_format[0]
+end
+
+puts "Downloading #{download_format}"
+system("youtube-dl '#{url}' -f '#{download_format}'")
+
+if false && video_format[1][:format] != 'mp4'
+  filename = `youtube-dl --get-filename '#{url}'`.strip
+  system("ffmpeg -i '#{filename}' '#{filename.sub(/\..{1,5}$/, '.mp4')}'")
+end
