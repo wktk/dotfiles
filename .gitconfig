@@ -13,3 +13,5 @@
 	insteadOf = https://github.com/
 [gpg "x509"]
 	program = smimesign
+[stash]
+	showPatch = true
