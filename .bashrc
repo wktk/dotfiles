@@ -54,6 +54,10 @@ function mkheroku() {
   fi
 }
 
+function mkgif() {
+  ffmpeg -i "$1" -vf scale=1280:-1 -r 10 "$2"
+}
+
 # env vars
 export EDITOR="vim"
 
