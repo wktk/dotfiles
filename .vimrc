@@ -50,4 +50,6 @@ Plug 'w0rp/ale'
 
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
+Plug 'mechatroner/rainbow_csv'
+
 call plug#end()
