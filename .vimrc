@@ -52,4 +52,8 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 Plug 'mechatroner/rainbow_csv'
 
+Plug 'sickill/vim-monokai'
+
 call plug#end()
+
+colorscheme monokai
