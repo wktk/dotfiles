@@ -10,6 +10,7 @@ set encoding=utf-8
 set cursorline
 set cursorcolumn
 set backspace=indent,eol,start
+runtime macros/matchit.vim
 
 call plug#begin('~/.vim/plugged')
 
@@ -20,11 +21,6 @@ Plug 'darfink/vim-plist'
 " wisely add "end" in ruby, endfunction/endif/more in vim script
 " https://github.com/tpope/vim-endwise
 Plug 'tpope/vim-endwise'
-
-" Map '%' to jump from one keyword to its corresponding 'end' in Ruby files.
-" (Original) http://www.vim.org/scripts/script.php?script_id=290
-" https://github.com/stevemadere/ruby-matchit
-Plug 'stevemadere/ruby-matchit'
 
 " HTML5 + inline SVG omnicomplete function, indent and syntax for Vim.
 " https://github.com/othree/html5.vim
