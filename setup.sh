@@ -4,7 +4,6 @@ DOTFILES="
   .bashrc
   .bin
   .gitconfig
-  .oh-my-zsh
   .tmux.conf
   .tmux-pbcopy.conf
   .vim
@@ -14,6 +13,7 @@ DOTFILES="
 
 RETIRED="
   .profile
+  .oh-my-zsh
 "
 
 for dotfile in $DOTFILES; do
