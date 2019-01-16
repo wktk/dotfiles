@@ -57,7 +57,7 @@ zstyle ':prezto:load' pmodule \
 #
 
 # Set the key mapping style to 'emacs' or 'vi'.
-zstyle ':prezto:module:editor' key-bindings 'emacs'
+zstyle ':prezto:module:editor' key-bindings 'vi'
 
 # Auto convert .... to ../..
 # zstyle ':prezto:module:editor' dot-expansion 'yes'
@@ -222,6 +222,25 @@ zstyle ':prezto:module:prompt' theme 'sorin'
 # before deleting or overwriting files. Set to 'no' to disable this safer
 # behavior.
 # zstyle ':prezto:module:utility' safe-ops 'yes'
+
+# Use powerlevel9k theme
 export TERM="xterm-256color"
 POWERLEVEL9K_MODE='nerdfont-complete'
 zstyle ':prezto:module:prompt' theme 'powerlevel9k'
+
+# Customize powerlevel9k
+POWERLEVEL9K_DIR_ETC_BACKGROUND='springgreen1'
+POWERLEVEL9K_DIR_HOME_BACKGROUND='springgreen1'
+POWERLEVEL9K_DIR_DEFAULT_BACKGROUND='springgreen1'
+POWERLEVEL9K_DIR_HOME_SUBFOLDER_BACKGROUND='springgreen1'
+
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
+  dir
+  vcs
+)
+
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
+  status
+  history
+  time
+)
