@@ -222,3 +222,6 @@ zstyle ':prezto:module:prompt' theme 'sorin'
 # before deleting or overwriting files. Set to 'no' to disable this safer
 # behavior.
 # zstyle ':prezto:module:utility' safe-ops 'yes'
+export TERM="xterm-256color"
+POWERLEVEL9K_MODE='nerdfont-complete'
+zstyle ':prezto:module:prompt' theme 'powerlevel9k'
