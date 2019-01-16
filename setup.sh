@@ -23,6 +23,8 @@ RETIRED="
 "
 
 git submodule update --init --recursive
+brew tap caskroom/fonts
+brew cask install font-hack-nerd-font
 
 for dotfile in $DOTFILES; do
   if [ -h "$HOME/$dotfile" ]; then
