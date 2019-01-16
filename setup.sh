@@ -8,6 +8,12 @@ DOTFILES="
   .tmux-pbcopy.conf
   .vim
   .vimrc
+  .zprezto
+  .zlogin
+  .zlogout
+  .zpreztorc
+  .zprofile
+  .zshenv
   .zshrc
 "
 
@@ -15,6 +21,8 @@ RETIRED="
   .profile
   .oh-my-zsh
 "
+
+git submodule update --init --recursive
 
 for dotfile in $DOTFILES; do
   if [ -h "$HOME/$dotfile" ]; then
