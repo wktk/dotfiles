@@ -5,6 +5,7 @@
 	default = simple
 [core]
 	excludesfile = ~/.gitignore_global
+	precomposeUnicode = true
 [include]
 	path = ~/.gitconfig_local
 [alias]
