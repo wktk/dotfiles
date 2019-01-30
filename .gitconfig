@@ -16,3 +16,5 @@
 	program = smimesign
 [stash]
 	showPatch = true
+[rebase]
+	autosquash = true
