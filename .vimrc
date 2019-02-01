@@ -10,6 +10,8 @@ set encoding=utf-8
 set cursorline
 set cursorcolumn
 set backspace=indent,eol,start
+set mouse=a
+set ttymouse=xterm2
 runtime macros/matchit.vim
 
 call plug#begin('~/.vim/plugged')
