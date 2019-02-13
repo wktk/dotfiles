@@ -55,3 +55,7 @@ Plug 'sickill/vim-monokai'
 call plug#end()
 
 colorscheme monokai
+
+let g:ale_fixers = {
+\   'ruby': ['rubocop'],
+\}
