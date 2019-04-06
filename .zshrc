@@ -5,8 +5,8 @@ fi
 
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=99999
+SAVEHIST=99999
 setopt appendhistory
 bindkey -e
 # End of lines configured by zsh-newuser-install
