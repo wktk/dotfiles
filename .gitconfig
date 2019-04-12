@@ -11,6 +11,7 @@
 [alias]
 	merged-branch = !git branch --merged | grep -v '*\\|master\\|develop' | xargs git branch -d
 	dj = diff --word-diff-regex=$'[^\\x80-\\xbf][\\x80-\\xbf]*' --word-diff=color
+	co = checkout
 [url "git@github.com:"]
 	insteadOf = https://github.com/
 [gpg "x509"]
