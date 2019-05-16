@@ -63,6 +63,7 @@ export EDITOR="vim"
 
 # custom bin
 export PATH="$HOME/.bin:$HOME/go/bin:./.bundle/bin:$HOME/.rbenv/bin:$PATH"
+export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools"
 
 # init rbenv
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
