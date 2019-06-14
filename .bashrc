@@ -71,3 +71,5 @@ if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 if [ -f "$HOME/.profile_local" ]; then
   . $HOME/.profile_local
 fi
+
+export RUBY_CONFIGURE_OPTS="--with-readline-dir=/usr/lib"
