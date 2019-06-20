@@ -52,6 +52,8 @@ Plug 'mechatroner/rainbow_csv'
 
 Plug 'sickill/vim-monokai'
 
+Plug 'leafgarland/typescript-vim'
+
 call plug#end()
 
 colorscheme monokai
