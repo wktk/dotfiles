@@ -54,6 +54,8 @@ Plug 'sickill/vim-monokai'
 
 Plug 'leafgarland/typescript-vim'
 
+Plug 'hashivim/vim-terraform'
+
 call plug#end()
 
 colorscheme monokai
