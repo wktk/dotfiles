@@ -18,7 +18,7 @@ compinit
 # End of lines added by compinstall
 
 # Load direnv
-type direnv && eval "$(direnv hook zsh)"
+type direnv > /dev/null && eval "$(direnv hook zsh)"
 
 # Load my old settings
 . ~/.bashrc
