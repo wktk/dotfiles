@@ -70,3 +70,4 @@ let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_insert_leave = 1
 
 au BufNewFile,BufRead,BufReadPost Capfile set syntax=Ruby
+au BufNewFile,BufRead,BufReadPost .envrc set syntax=sh
