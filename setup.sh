@@ -4,6 +4,7 @@ DOTFILES="
   .bashrc
   .bin
   .gitconfig
+  .tmux
   .tmux.conf
   .tmux-pbcopy.conf
   .vim
