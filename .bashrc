@@ -16,6 +16,8 @@ alias ll='ls -laFh'
 alias sa='eval "$(ssh-agent)" && ssh-add'
 alias vi='vim'
 alias d='dig +noedns'
+alias nosleep='sudo pmset -a disablesleep 1'
+alias nonosleep='sudo pmset -a disablesleep 0'
 
 # Heroku clone
 function hc() {
