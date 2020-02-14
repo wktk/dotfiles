@@ -60,6 +60,10 @@ function mkgif() {
   ffmpeg -i "$1" -vf scale=1280:-1 -r 10 "$2"
 }
 
+function m3u8() {
+  ffmpeg -allowed_extensions ALL -protocol_whitelist file,http,https,tcp,tls,crypto -i "$1" -movflags faststart -c copy -bsf:a aac_adtstoasc "$1.mp4"
+}
+
 # env vars
 export EDITOR="vim"
 
