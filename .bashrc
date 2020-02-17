@@ -57,7 +57,11 @@ function mkheroku() {
 }
 
 function mkgif() {
-  ffmpeg -i "$1" -vf scale=1280:-1 -r 10 "$2"
+  ffmpeg -i "$1" -vf scale=1280:-1 -r 10 "$1.gif"
+}
+
+function mkgif2x() {
+  ffmpeg -i "$1" -vf "scale=1280:-1,setpts=0.5*PTS" -r 10 "$1.2x.gif"
 }
 
 function m3u8() {
