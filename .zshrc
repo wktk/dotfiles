@@ -27,3 +27,8 @@ fi
 
 # Load my old settings
 . ~/.bashrc
+
+# AWS ACCOUNT NAME
+function aws_account_info {
+  [ "$AWS_ACCOUNT_NAME" ] && [ "$AWS_ACCOUNT_ROLE" ] && echo "%F{blue}aws:(%f%F{red}$AWS_ACCOUNT_NAME:$AWS_ACCOUNT_ROLE%f%F{blue})%F$reset_color"
+}
