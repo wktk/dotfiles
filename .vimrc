@@ -12,8 +12,6 @@ set cursorcolumn
 set backspace=indent,eol,start
 set mouse=a
 set ttymouse=xterm2
-set clipboard&
-set clipboard^=unnamedplus
 runtime macros/matchit.vim
 
 call plug#begin('~/.vim/plugged')
