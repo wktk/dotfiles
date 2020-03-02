@@ -22,6 +22,7 @@ Plug 'w0rp/ale'
 Plug 'sickill/vim-monokai'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'tomtom/tcomment_vim'
+Plug 'vim-scripts/sudo.vim'
 
 " Languages -- Ruby
 " wisely add "end" in ruby, endfunction/endif/more in vim script
