@@ -30,13 +30,17 @@ nnoremap q/ <Nop>
 
 call plug#begin('~/.vim/plugged')
 
-" Vim
-Plug 'tyru/open-browser.vim'
-Plug 'w0rp/ale'
+" Vim -- Theme
 Plug 'sickill/vim-monokai'
+
+" Vim -- Edit
+Plug 'w0rp/ale'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'tomtom/tcomment_vim'
+
+" Vim -- Feature
 Plug 'vim-scripts/sudo.vim'
+Plug 'tyru/open-browser.vim'
 Plug 'fuenor/qfixhowm'
 
 " Languages -- Ruby
