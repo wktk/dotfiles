@@ -20,6 +20,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'tyru/open-browser.vim'
 Plug 'w0rp/ale'
 Plug 'sickill/vim-monokai'
+Plug 'editorconfig/editorconfig-vim'
 
 " Languages -- Ruby
 " wisely add "end" in ruby, endfunction/endif/more in vim script
