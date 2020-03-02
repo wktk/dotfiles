@@ -14,6 +14,9 @@ set mouse=a
 set ttymouse=xterm2
 runtime macros/matchit.vim
 
+" Jump to the last position when reopening a file
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
 call plug#begin('~/.vim/plugged')
 
 " Vim
