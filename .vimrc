@@ -22,6 +22,12 @@ runtime macros/matchit.vim
 " Jump to the last position when reopening a file
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
+" Avoid typo
+nnoremap qq: <Esc>q:
+nnoremap qq/ <Esc>q/
+nnoremap q: <Nop>
+nnoremap q/ <Nop>
+
 call plug#begin('~/.vim/plugged')
 
 " Vim
