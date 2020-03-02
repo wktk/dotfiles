@@ -58,6 +58,10 @@ Plug 'hashivim/vim-terraform'
 
 Plug 'tpope/vim-rails'
 
+if isdirectory(expand('~/github/vim-yamaha'))
+  Plug '~/github/vim-yamaha'
+end
+
 call plug#end()
 
 colorscheme monokai
