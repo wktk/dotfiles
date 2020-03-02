@@ -31,6 +31,10 @@ nnoremap q/ <Nop>
 " Shortcut to :noh
 nnoremap <Esc><Esc> :noh<CR>
 
+" Hold Visual mode after pressing < or >
+vnoremap < <gv
+vnoremap > >gv
+
 call plug#begin('~/.vim/plugged')
 
 " Vim -- Appearance
