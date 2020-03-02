@@ -16,48 +16,33 @@ runtime macros/matchit.vim
 
 call plug#begin('~/.vim/plugged')
 
-" Add plist editing support to Vim
-" https://github.com/darfink/vim-plist
-Plug 'darfink/vim-plist'
-
-" wisely add "end" in ruby, endfunction/endif/more in vim script
-" https://github.com/tpope/vim-endwise
-Plug 'tpope/vim-endwise'
-
-" HTML5 + inline SVG omnicomplete function, indent and syntax for Vim.
-" https://github.com/othree/html5.vim
-Plug 'othree/html5.vim'
-
-" Syntax highlight for Slim
-" https://github.com/slim-template/vim-slim
-Plug  'slim-template/vim-slim'
-
-" Markdown preview
-Plug 'previm/previm'
-
-" JS Syntax highlight
-Plug 'othree/yajs.vim'
-
-" Open URI with browser
+" Vim
 Plug 'tyru/open-browser.vim'
-
-Plug 'kchmck/vim-coffee-script'
-
-" Asynchronous Lint Engine
 Plug 'w0rp/ale'
-
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-
-Plug 'mechatroner/rainbow_csv'
-
 Plug 'sickill/vim-monokai'
 
-Plug 'leafgarland/typescript-vim'
-
-Plug 'hashivim/vim-terraform'
-
+" Languages -- Ruby
+" wisely add "end" in ruby, endfunction/endif/more in vim script
+Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-rails'
 
+" Languages -- Markup
+Plug 'othree/html5.vim'
+Plug 'slim-template/vim-slim'
+Plug 'previm/previm'
+
+" Languages -- JavaScript
+Plug 'leafgarland/typescript-vim'
+Plug 'othree/yajs.vim'
+Plug 'kchmck/vim-coffee-script'
+
+" Languages -- others
+Plug 'hashivim/vim-terraform'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'darfink/vim-plist'
+Plug 'mechatroner/rainbow_csv'
+
+" Others
 if isdirectory(expand('~/github/vim-yamaha'))
   Plug '~/github/vim-yamaha'
 end
