@@ -120,6 +120,15 @@ if !has('gui_running')
   hi IndentGuidesEven ctermbg=238
 endif
 
+" neocomplete -- dict for Ruby & JS
+let s:neco_dicts_dir = '~/.vim/dicts'
+if isdirectory(s:neco_dicts_dir)
+  let g:neocomplete#sources#dictionary#dictionaries = {
+  \   'ruby': s:neco_dicts_dir . '/ruby.dict',
+  \   'javascript': s:neco_dicts_dir . '/jquery.dict',
+  \ }
+endif
+
 " neocomplete.vim {{{
 " https://github.com/Shougo/neocomplete.vim
 
