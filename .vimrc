@@ -57,7 +57,6 @@ Plug 'fuenor/qfixhowm'
 Plug 'houtsnip/vim-emacscommandline'
 
 " Languages -- Ruby
-" wisely add "end" in ruby, endfunction/endif/more in vim script
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-rails'
 Plug 'todesking/ruby_hl_lvar.vim'
