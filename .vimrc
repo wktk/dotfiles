@@ -28,6 +28,9 @@ nnoremap qq/ <Esc>q/
 nnoremap q: <Nop>
 nnoremap q/ <Nop>
 
+" Shortcut to :noh
+nnoremap <Esc><Esc> :noh<CR>
+
 call plug#begin('~/.vim/plugged')
 
 " Vim -- Appearance
