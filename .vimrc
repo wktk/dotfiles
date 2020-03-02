@@ -37,6 +37,7 @@ Plug 'sickill/vim-monokai'
 Plug 'w0rp/ale'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'tomtom/tcomment_vim'
+Plug 'vim-scripts/YankRing.vim'
 
 " Vim -- Feature
 Plug 'vim-scripts/sudo.vim'
