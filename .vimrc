@@ -12,6 +12,11 @@ set cursorcolumn
 set backspace=indent,eol,start
 set mouse=a
 set ttymouse=xterm2
+set history=10000
+set nomodeline
+set hlsearch
+set incsearch
+
 runtime macros/matchit.vim
 
 " Jump to the last position when reopening a file
