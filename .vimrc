@@ -13,7 +13,6 @@ set backspace=indent,eol,start
 set mouse=a
 set ttymouse=xterm2
 set history=10000
-set nomodeline
 set hlsearch
 set incsearch
 
@@ -117,3 +116,5 @@ if !has('gui_running')
   hi IndentGuidesOdd ctermbg=233
   hi IndentGuidesEven ctermbg=238
 endif
+
+" vim:set foldmethod=marker :
