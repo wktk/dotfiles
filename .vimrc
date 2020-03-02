@@ -43,6 +43,7 @@ Plug 'vim-scripts/YankRing.vim'
 Plug 'vim-scripts/sudo.vim'
 Plug 'tyru/open-browser.vim'
 Plug 'fuenor/qfixhowm'
+Plug 'houtsnip/vim-emacscommandline'
 
 " Languages -- Ruby
 " wisely add "end" in ruby, endfunction/endif/more in vim script
