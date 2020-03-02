@@ -55,6 +55,7 @@ Plug 'vim-scripts/sudo.vim'
 Plug 'tyru/open-browser.vim'
 Plug 'fuenor/qfixhowm'
 Plug 'houtsnip/vim-emacscommandline'
+Plug 'christoomey/vim-tmux-navigator'
 
 " Languages -- Ruby
 Plug 'tpope/vim-endwise'
