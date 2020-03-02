@@ -1,4 +1,4 @@
-set fileencodings=utf-8,cp932
+set fileencodings=utf-8,euc-jp,cp932
 syntax on
 set number
 set smartindent
