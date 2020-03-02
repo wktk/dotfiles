@@ -60,6 +60,7 @@ Plug 'houtsnip/vim-emacscommandline'
 " wisely add "end" in ruby, endfunction/endif/more in vim script
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-rails'
+Plug 'todesking/ruby_hl_lvar.vim'
 
 " Languages -- Markup
 Plug 'othree/html5.vim'
