@@ -31,6 +31,7 @@ Plug 'sickill/vim-monokai'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'tomtom/tcomment_vim'
 Plug 'vim-scripts/sudo.vim'
+Plug 'fuenor/qfixhowm'
 
 " Languages -- Ruby
 " wisely add "end" in ruby, endfunction/endif/more in vim script
@@ -72,3 +73,15 @@ let g:ale_lint_on_insert_leave = 1
 au BufNewFile,BufRead,BufReadPost Capfile set syntax=Ruby
 au BufNewFile,BufRead,BufReadPost .envrc set syntax=sh
 au BufNewFile,BufRead,BufReadPost *-Dockerfile set syntax=Dockerfile
+
+" QFixHowm
+set timeout timeoutlen=3000 ttimeoutlen=100
+let QFixHowm_Key = 'g'
+let howm_dir = '~/howm'
+let howm_filename = '%Y-%m-%d-%H%M%S.md'
+let howm_fileencoding = 'utf-8'
+let howm_fileformat = 'unix'
+let QFixWin_EnableMode = 1
+let QFixHowm_SplitMode = 1
+let QFixHowm_Title = '#'
+let QFixHowm_FileType = 'markdown'
