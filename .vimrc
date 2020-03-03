@@ -78,6 +78,7 @@ Plug 'hashivim/vim-terraform'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'darfink/vim-plist'
 Plug 'mechatroner/rainbow_csv'
+Plug 'udalov/kotlin-vim'
 
 " Others
 if isdirectory(expand('~/github/vim-yamaha'))
