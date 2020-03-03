@@ -73,12 +73,15 @@ Plug 'leafgarland/typescript-vim'
 Plug 'othree/yajs.vim'
 Plug 'kchmck/vim-coffee-script'
 
+" Languages -- Kotlin
+Plug 'udalov/kotlin-vim'
+Plug 'Shadowsith/kotlincomplete.vim'
+
 " Languages -- others
 Plug 'hashivim/vim-terraform'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'darfink/vim-plist'
 Plug 'mechatroner/rainbow_csv'
-Plug 'udalov/kotlin-vim'
 
 " Others
 if isdirectory(expand('~/github/vim-yamaha'))
