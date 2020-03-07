@@ -21,6 +21,8 @@ runtime macros/matchit.vim
 " Jump to the last position when reopening a file
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
+" Remaps {{{
+
 " Avoid typo
 nnoremap qq: <Esc>q:
 nnoremap qq/ <Esc>q/
@@ -33,7 +35,9 @@ nnoremap <Esc><Esc> :noh<CR>
 " Hold Visual mode after pressing < or >
 vnoremap < <gv
 vnoremap > >gv
+" }}}
 
+" Plugins {{{
 call plug#begin('~/.vim/plugged')
 
 " Vim -- Appearance
@@ -89,21 +93,24 @@ if isdirectory(expand('~/github/vim-yamaha'))
 end
 
 call plug#end()
+" }}}
 
 colorscheme monokai
 
+" ale {{{
 let g:ale_fixers = {
 \   'ruby': ['rubocop'],
 \}
 
 let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_insert_leave = 1
+" }}}
 
 au BufNewFile,BufRead,BufReadPost Capfile set syntax=Ruby
 au BufNewFile,BufRead,BufReadPost .envrc set syntax=sh
 au BufNewFile,BufRead,BufReadPost *-Dockerfile set syntax=Dockerfile
 
-" QFixHowm
+" QFixHowm {{{
 set timeout timeoutlen=3000 ttimeoutlen=100
 let QFixHowm_Key = 'g'
 let howm_dir = '~/howm'
@@ -114,8 +121,9 @@ let QFixWin_EnableMode = 1
 let QFixHowm_SplitMode = 1
 let QFixHowm_Title = '#'
 let QFixHowm_FileType = 'markdown'
+" }}}
 
-" vim-indent-guides
+" vim-indent-guides {{{
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_guide_size = 1
 let g:indent_guides_start_level = 2
@@ -125,8 +133,9 @@ if !has('gui_running')
   hi IndentGuidesOdd ctermbg=233
   hi IndentGuidesEven ctermbg=238
 endif
+" }}}
 
-" neocomplete -- dict for Ruby & JS
+" neocomplete -- dict for Ruby & JS {{{
 let s:neco_dicts_dir = '~/.vim/dicts'
 if isdirectory(s:neco_dicts_dir)
   let g:neocomplete#sources#dictionary#dictionaries = {
@@ -134,6 +143,7 @@ if isdirectory(s:neco_dicts_dir)
   \   'javascript': s:neco_dicts_dir . '/jquery.dict',
   \ }
 endif
+" }}}
 
 " neocomplete.vim {{{
 " https://github.com/Shougo/neocomplete.vim
