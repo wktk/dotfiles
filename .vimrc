@@ -86,6 +86,7 @@ Plug 'hashivim/vim-terraform'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'darfink/vim-plist'
 Plug 'mechatroner/rainbow_csv'
+Plug 'pearofducks/ansible-vim'
 
 " Others
 if isdirectory(expand('~/github/vim-yamaha'))
