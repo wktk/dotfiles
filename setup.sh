@@ -1,6 +1,7 @@
 #!/bin/bash
 
 DOTFILES="
+  .actrc
   .bashrc
   .bin
   .gitconfig
