@@ -57,7 +57,7 @@ Plug 'Shougo/neocomplete.vim'
 " Vim -- Feature
 Plug 'vim-scripts/sudo.vim'
 Plug 'tyru/open-browser.vim'
-Plug 'fuenor/qfixhowm'
+" Plug 'fuenor/qfixhowm'
 Plug 'houtsnip/vim-emacscommandline'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-fugitive'
