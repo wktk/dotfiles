@@ -13,6 +13,7 @@
 	dj = diff --word-diff-regex=$'[^\\x80-\\xbf][\\x80-\\xbf]*' --word-diff=color
 	co = !printf '"\\e[31mUse \\e[47;1mswitch\\e[m\\e[31m or \\e[47;1mrestore\\e[m\n"' && exit 3 && :
 	sw = switch
+	graph = log --graph --all --format='%x09%an%x09%h %d %s' --no-show-signature
 [url "git@github.com:"]
 	insteadOf = https://github.com/
 [gpg "x509"]
