@@ -18,6 +18,7 @@ alias vi='vim'
 alias d='dig +noedns'
 alias nosleep='sudo pmset -a disablesleep 1'
 alias nonosleep='sudo pmset -a disablesleep 0'
+alias dnsstatic='awk ''NF { print "dns static a " $0 " 0.0.0.0\ndns static aaaa " $0 " ::" }'''
 
 # Heroku clone
 function hc() {
