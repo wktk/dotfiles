@@ -43,6 +43,7 @@ call plug#begin('~/.vim/plugged')
 " Vim -- Appearance
 Plug 'cocopon/iceberg.vim'
 Plug 'nathanaelkane/vim-indent-guides'
+Plug 'vim-airline/vim-airline'
 
 " Vim -- Edit
 Plug 'w0rp/ale'
