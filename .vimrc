@@ -41,7 +41,7 @@ vnoremap > >gv
 call plug#begin('~/.vim/plugged')
 
 " Vim -- Appearance
-Plug 'sickill/vim-monokai'
+Plug 'cocopon/iceberg.vim'
 Plug 'nathanaelkane/vim-indent-guides'
 
 " Vim -- Edit
@@ -96,7 +96,7 @@ end
 call plug#end()
 " }}}
 
-colorscheme monokai
+colorscheme iceberg
 
 " ale {{{
 let g:ale_fixers = {
