@@ -88,6 +88,7 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'darfink/vim-plist'
 Plug 'mechatroner/rainbow_csv'
 Plug 'pearofducks/ansible-vim'
+Plug 'rust-lang/rust.vim'
 
 " Others
 if isdirectory(expand('~/github/vim-yamaha'))
