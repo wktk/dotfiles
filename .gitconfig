@@ -26,3 +26,5 @@
 	enabled = true
 [tag]
 	gpgSign = true
+[pull]
+	ff = only
