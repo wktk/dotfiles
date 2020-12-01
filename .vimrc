@@ -66,7 +66,7 @@ Plug 'tpope/vim-fugitive'
 " Languages -- Ruby
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-rails'
-Plug 'todesking/ruby_hl_lvar.vim'
+"Plug 'todesking/ruby_hl_lvar.vim'
 
 " Languages -- Markup
 Plug 'othree/html5.vim'
