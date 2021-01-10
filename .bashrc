@@ -20,7 +20,27 @@ alias nosleep='sudo pmset -a disablesleep 1'
 alias nonosleep='sudo pmset -a disablesleep 0'
 alias dnsstatic='awk ''NF { print "dns static a " $0 " 0.0.0.0\ndns static aaaa " $0 " ::" }'''
 alias ksok='ssh -D 12345 -q -N ksok'
-alias grayscale="python -c 'from ctypes import cdll;lib = cdll.LoadLibrary(\"/System/Library/PrivateFrameworks/UniversalAccess.framework/UniversalAccess\");lib.UAGrayscaleSetEnabled(lib.UAGrayscaleIsEnabled() == 0)'"
+
+# macOS: toggles screen grayscale
+# usage: $ grayscale [on|off]
+# note:  toggles when no args provided
+grayscale() {
+  arg="lib.UAGrayscaleIsEnabled() == 0"
+
+  if [ ! -z "$1" ]; then
+    if [ "$1" = "on" ]; then
+      arg="True"
+    elif [ "$1" = "off" ]; then
+      arg="False"
+    fi
+  fi
+
+  (sed 's/^ *//' | sed "s/__ARG__/$arg/" | python) <<"  EOF"
+    from ctypes import cdll
+    lib = cdll.LoadLibrary("/System/Library/PrivateFrameworks/UniversalAccess.framework/UniversalAccess")
+    lib.UAGrayscaleSetEnabled(__ARG__)
+  EOF
+}
 
 # Heroku clone
 function hc() {
