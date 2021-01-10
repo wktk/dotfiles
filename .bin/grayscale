@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# macOS: toggles screen grayscale
+# usage: $ grayscale [on|off]
+# note:  toggles when no args provided
+
+arg="lib.UAGrayscaleIsEnabled() == 0"
+
+if [ ! -z "$1" ]; then
+	if [ "$1" = "on" ]; then
+		arg="True"
+	elif [ "$1" = "off" ]; then
+		arg="False"
+	else
+		echo "usage: $0 [on|off]"
+		exit 1
+	fi
+fi
+
+python <<-EOF
+	from ctypes import cdll
+	lib = cdll.LoadLibrary("/System/Library/PrivateFrameworks/UniversalAccess.framework/UniversalAccess")
+	lib.UAGrayscaleSetEnabled($arg)
+EOF
