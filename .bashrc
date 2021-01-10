@@ -20,6 +20,7 @@ alias nosleep='sudo pmset -a disablesleep 1'
 alias nonosleep='sudo pmset -a disablesleep 0'
 alias dnsstatic='awk ''NF { print "dns static a " $0 " 0.0.0.0\ndns static aaaa " $0 " ::" }'''
 alias ksok='ssh -D 12345 -q -N ksok'
+alias grayscale="python -c 'from ctypes import cdll;lib = cdll.LoadLibrary(\"/System/Library/PrivateFrameworks/UniversalAccess.framework/UniversalAccess\");lib.UAGrayscaleSetEnabled(lib.UAGrayscaleIsEnabled() == 0)'"
 
 # Heroku clone
 function hc() {
