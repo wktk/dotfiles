@@ -1,0 +1,38 @@
+#!/usr/bin/osascript
+
+use framework "CoreBrightness"
+
+on usage()
+	return "Usage: nightshift [0...100|on|off]"
+end usage
+
+on run argv
+	if (count of argv) = 0 then
+		return usage()
+	end if
+	
+	set client to current application's CBBlueLightClient's new
+	
+	try
+		set strength to item 1 of argv as number
+		if strength = 0.0 then
+			client's setEnabled:false
+			return "Turned Night Shift off"
+		end if
+
+		client's setEnabled:true
+		client's setStrength:(strength / 100.0) commit:true
+		return "Turned Night Shift on, and set its strength to " & strength
+	on error
+		set mode to item 1 of argv
+		
+		if mode = "off" then
+			client's setEnabled:false
+			return "Turned Night Shift off"
+		else if mode = "on" then
+			client's setEnabled:true
+			return "Turned Night Shift on"
+		end if
+		return usage()
+	end try
+end run
