@@ -20,6 +20,8 @@ alias nosleep='sudo pmset -a disablesleep 1'
 alias nonosleep='sudo pmset -a disablesleep 0'
 alias dnsstatic='awk ''NF { print "dns static a " $0 " 0.0.0.0\ndns static aaaa " $0 " ::" }'''
 alias ksok='ssh -D 12345 -q -N ksok'
+alias mymake='make -f MyMakefile'
+alias mm='mymake'
 
 # Heroku clone
 function hc() {
