@@ -7,3 +7,6 @@
 [submodule ".vim/dicts"]
 	path = .vim/dicts
 	url = https://github.com/pocke/dicts.git
+[submodule "zsh-plugins/zsh-autoswitch-virtualenv"]
+	path = zsh-plugins/zsh-autoswitch-virtualenv
+	url = https://github.com/MichaelAquilina/zsh-autoswitch-virtualenv
