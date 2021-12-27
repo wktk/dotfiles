@@ -82,6 +82,10 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 # init rbenv
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+if which pyenv > /dev/null; then
+  eval "$(pyenv init --path)"
+  eval "$(pyenv init -)"
+fi
 
 # init nvm
 export NVM_DIR="$HOME/.nvm"

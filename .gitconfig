@@ -6,14 +6,15 @@
 [core]
 	excludesfile = ~/.gitignore_global
 	precomposeUnicode = true
+	commentChar = ";"
 [include]
 	path = ~/.gitconfig_local
 [alias]
-	merged-branch = !git branch --merged | grep -v '*\\|master\\|develop' | xargs git branch -d
+	merged-branch = !git branch --merged | grep -v '*\\|master\\|develop\\|main' | xargs git branch -d
 	dj = diff --word-diff-regex=$'[^\\x80-\\xbf][\\x80-\\xbf]*' --word-diff=color
 	co = !printf '"\\e[31mUse \\e[47;1mswitch\\e[m\\e[31m or \\e[47;1mrestore\\e[m\n"' && exit 3 && :
 	sw = switch
-	graph = log --graph --all --format='%x09%an%x09%h %d %s' --no-show-signature
+	graph = log --graph --all --format='%x09%ad %h %d %ae%x09%s' --no-show-signature --date=short
 [url "git@github.com:"]
 	insteadOf = https://github.com/
 [gpg "x509"]

@@ -15,6 +15,7 @@ set ttymouse=xterm2
 set history=10000
 set hlsearch
 set incsearch
+set directory=~/.vim/swp
 
 runtime macros/matchit.vim
 
