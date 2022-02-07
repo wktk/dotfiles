@@ -96,3 +96,11 @@ if [ -f "$HOME/.profile_local" ]; then
 fi
 
 export RUBY_CONFIGURE_OPTS="--with-readline-dir=/usr/lib"
+
+if which zoxide > /dev/null; then
+  if [ -n "$BASH" ]; then
+    eval "$(zoxide init bash)"
+  elif [ -n "$ZSH_NAME" ]; then
+    eval "$(zoxide init zsh)"
+  fi
+fi
