@@ -26,7 +26,7 @@ RETIRED="
 
 git submodule update --init --recursive
 brew tap homebrew/cask-fonts
-brew install --cask font-hack-nerd-font
+brew install font-hack-nerd-font font-hackgen-nerd
 
 for dotfile in $DOTFILES; do
   if [ -h "$HOME/$dotfile" ]; then
