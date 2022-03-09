@@ -100,7 +100,9 @@ export RUBY_CONFIGURE_OPTS="--with-readline-dir=/usr/lib"
 if which zoxide > /dev/null; then
   if [ -n "$BASH" ]; then
     eval "$(zoxide init bash)"
+    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
   elif [ -n "$ZSH_NAME" ]; then
     eval "$(zoxide init zsh)"
+    [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
   fi
 fi

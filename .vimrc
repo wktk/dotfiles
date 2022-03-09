@@ -55,6 +55,8 @@ Plug 'tpope/vim-surround'
 
 " Vim -- Completion
 Plug 'Shougo/neocomplete.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 " Vim -- Feature
 Plug 'vim-scripts/sudo.vim'
