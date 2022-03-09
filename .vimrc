@@ -45,6 +45,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'sickill/vim-monokai'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'vim-airline/vim-airline'
+Plug 'simeji/winresizer'
 
 " Vim -- Edit
 Plug 'w0rp/ale'
