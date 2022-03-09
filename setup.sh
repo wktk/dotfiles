@@ -26,7 +26,11 @@ RETIRED="
 
 git submodule update --init --recursive
 brew tap homebrew/cask-fonts
-brew install font-hack-nerd-font font-hackgen-nerd
+brew install \
+  font-hack-nerd-font \
+  font-hackgen-nerd \
+  fzf \
+  zoxide \
 
 for dotfile in $DOTFILES; do
   if [ -h "$HOME/$dotfile" ]; then
