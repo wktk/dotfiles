@@ -29,6 +29,9 @@ brew tap homebrew/cask-fonts
 brew install \
   font-hack-nerd-font \
   font-hackgen-nerd \
+  font-biz-udgothic \
+  font-udev-gothic \
+  font-udev-gothic-nf \
   fzf \
   zoxide \
 
