@@ -2,6 +2,7 @@
 
 DOTFILES="
   .actrc
+  .asdfrc
   .bashrc
   .bin
   .gitconfig
@@ -27,6 +28,7 @@ RETIRED="
 git submodule update --init --recursive
 brew tap homebrew/cask-fonts
 brew install \
+  asdf \
   font-hack-nerd-font \
   font-hackgen-nerd \
   font-biz-udgothic \

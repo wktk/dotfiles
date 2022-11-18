@@ -76,19 +76,27 @@ function m3u8() {
 export EDITOR="vim"
 
 # custom bin
-export PATH="$HOME/.bin:$HOME/go/bin:./.bundle/bin:$HOME/.rbenv/bin:$PATH"
+export PATH="$HOME/.bin:$HOME/go/bin:$PATH"
 export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools"
 export PATH="$HOME/.cargo/bin:$PATH"
 
-# init rbenv
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-if which pyenv > /dev/null; then
-  eval "$(pyenv init --path)"
-  eval "$(pyenv init -)"
-fi
-if which nodenv > /dev/null; then
-  export PATH="$HOME/.nodenv/bin:$PATH"
-  eval "$(nodenv init -)"
+# init *env
+if which asdf > /dev/null; then
+  . $(brew --prefix asdf)/libexec/asdf.sh
+
+  if [ -n "$BASH" ]; then
+    . $(brew --prefix asdf)/etc/bash_completion.d/asdf.bash
+  fi
+else
+  if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+  if which pyenv > /dev/null; then
+    eval "$(pyenv init --path)"
+    eval "$(pyenv init -)"
+  fi
+  if which nodenv > /dev/null; then
+    export PATH="$HOME/.nodenv/bin:$PATH"
+    eval "$(nodenv init -)"
+  fi
 fi
 
 if [ -f "$HOME/.profile_local" ]; then
