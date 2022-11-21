@@ -8,6 +8,7 @@ fi
 alias bi='bundle install --path .bundle --binstubs .bundle/bin'
 alias bu='bundle update'
 alias dr='sudo killall -HUP mDNSResponder'
+alias docker-desktop='open /Applications/Docker.app'
 alias hl='heroku logs'
 alias irbb='irb -r bundler/setup'
 alias l='ls -CF'
@@ -22,6 +23,8 @@ alias dnsstatic='awk ''NF { print "dns static a " $0 " 0.0.0.0\ndns static aaaa 
 alias ksok='ssh -D 12345 -q -N ksok'
 alias mymake='make -f MyMakefile'
 alias mm='mymake'
+alias od='docker-desktop'
+alias qd='osascript -e ''quit app "Docker"'''
 
 # Heroku clone
 function hc() {
