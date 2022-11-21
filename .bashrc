@@ -117,3 +117,11 @@ if which zoxide > /dev/null; then
     [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
   fi
 fi
+
+if which gcloud > /dev/null; then
+  if [ -n "$BASH" ]; then
+    source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.bash.inc"
+  elif [ -n "$ZSH_NAME" ]; then
+    source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+  fi
+fi
