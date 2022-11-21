@@ -19,6 +19,10 @@
 	graph = log --graph --all --format='%x09%ad %h %d %ae%x09%s' --no-show-signature --date=short
 [url "git@github.com:"]
 	insteadOf = https://github.com/
+[url "git@gist.github.com:"]
+	insteadOf = https://gist.github.com/wktk/
+[url "git@gist.github.com:"]
+	insteadOf = https://gist.github.com/
 [gpg "x509"]
 	program = smimesign
 [stash]
