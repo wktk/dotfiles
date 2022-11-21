@@ -100,6 +100,9 @@ else
     export PATH="$HOME/.nodenv/bin:$PATH"
     eval "$(nodenv init -)"
   fi
+  if which jenv > /dev/null; then
+    eval "$(jenv init -)"
+  fi
 fi
 
 if [ -f "$HOME/.profile_local" ]; then
