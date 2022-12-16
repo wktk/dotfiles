@@ -24,7 +24,7 @@ alias ksok='ssh -D 12345 -q -N ksok'
 alias mymake='make -f MyMakefile'
 alias mm='mymake'
 alias od='docker-desktop'
-alias qd='osascript -e ''quit app "Docker"'''
+alias qd='osascript -e ''quit app "Docker Desktop"'''
 
 # Heroku clone
 function hc() {
