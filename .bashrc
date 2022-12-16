@@ -90,6 +90,14 @@ if which asdf > /dev/null; then
   if [ -n "$BASH" ]; then
     . $(brew --prefix asdf)/etc/bash_completion.d/asdf.bash
   fi
+
+  if [ -f ~/.asdf/plugins/java/set-java-home.bash ]; then
+    if [ -n "$BASH" ]; then
+      . ~/.asdf/plugins/java/set-java-home.bash
+    elif [ -n "$ZSH_NAME" ]; then
+      . ~/.asdf/plugins/java/set-java-home.zsh
+    fi
+  fi
 else
   if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
   if which pyenv > /dev/null; then
