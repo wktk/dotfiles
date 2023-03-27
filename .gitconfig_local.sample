@@ -1,8 +1,8 @@
 [user]
-	signingkey = xxxxxxxx
+	signingkey = key::ssh-ed25519 xxxxxxxxxxxxxxx
 [commit]
 	gpgsign = true
 [gpg]
-	program = gpg
+	format = ssh
 [log]
 	showSignature = true
