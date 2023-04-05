@@ -17,6 +17,7 @@
 	s = switch
 	fixup = commit --amend --no-edit
 	graph = log --graph --all --format='%x09%ad %h %d %ae%x09%s' --no-show-signature --date=short
+	pushf = push --force-with-lease --force-if-includes
 [url "git@github.com:"]
 	insteadOf = https://github.com/
 [url "git@gist.github.com:"]
