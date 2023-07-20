@@ -136,3 +136,7 @@ if which gcloud > /dev/null; then
     source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
   fi
 fi
+
+if ! command -v code &> /dev/null; then
+  alias code=code-insiders
+fi
