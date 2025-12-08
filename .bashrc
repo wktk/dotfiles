@@ -141,3 +141,11 @@ fi
 if ! command -v code &> /dev/null; then
   alias code=code-insiders
 fi
+
+if command -v copilot &> /dev/null; then
+  eval "$(gh copilot alias -- bash)"
+fi
+
+if [ -f "$HOME/.cargo/env" ]; then
+  . "$HOME/.cargo/env"
+fi
