@@ -1,1 +1,1 @@
--P ubuntu-latest=catthehacker/ubuntu:act-latest -P ubuntu-18.04=nektos/act-environments-ubuntu:18.04-full
+-P ubuntu-20.04=catthehacker/ubuntu:act-latest -P ubuntu-latest=catthehacker/ubuntu:act-latest -P ubuntu-18.04=nektos/act-environments-ubuntu:18.04-full --container-architecture linux/amd64
