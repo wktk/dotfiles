@@ -83,6 +83,7 @@ export EDITOR="vim"
 export PATH="$HOME/.bin:$HOME/go/bin:$PATH"
 export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools"
 export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 
 # init *env
 if which asdf > /dev/null; then
