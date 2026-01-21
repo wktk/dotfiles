@@ -41,3 +41,17 @@ function aws_account_info {
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/Users/user/.sdkman"
 [[ -s "/Users/user/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/user/.sdkman/bin/sdkman-init.sh"
+
+# VS Code Shell Integration for Copilot
+# Fix for terminal completion detection issue
+if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+  # Disable RPROMPT in VS Code (causes detection issues)
+  unset RPROMPT
+  unset RPS1
+
+  # Load VS Code shell integration
+  [[ -f "$(code --locate-shell-integration-path zsh)" ]] && \
+      . "$(code --locate-shell-integration-path zsh)"
+
+  export GH_PAGER=""
+fi
