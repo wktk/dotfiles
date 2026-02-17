@@ -53,5 +53,5 @@ if [[ "$TERM_PROGRAM" == "vscode" ]]; then
   [[ -f "$(code --locate-shell-integration-path zsh)" ]] && \
       . "$(code --locate-shell-integration-path zsh)"
 
-  export GH_PAGER=""
+  export GH_PAGER="" GIT_PAGER=""
 fi
