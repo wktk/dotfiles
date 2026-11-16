@@ -47,6 +47,8 @@ done
 # Servers may get a copy of this repository without .git (e.g. via rsync).
 if [ -e .git ]; then
   git submodule update --init --recursive
+  # Check out new submodule commits on pull as well, not only fetch them.
+  git config submodule.recurse true
 fi
 
 if [ "$(uname)" = "Darwin" ] && command -v brew > /dev/null; then
