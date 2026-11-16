@@ -109,6 +109,24 @@ case $- in
     ;;
 esac
 
+# Fall back to a TERM this host has terminfo for. ssh passes TERM through, and
+# e.g. tmux-256color is missing on older Debian, which breaks vim and less.
+if command -v infocmp > /dev/null && ! infocmp "$TERM" > /dev/null 2>&1; then
+  _rc_term=xterm-256color
+  # tmux-* has a close screen-* counterpart, e.g. screen-256color.
+  case $TERM in
+    tmux*)
+      if infocmp "screen${TERM#tmux}" > /dev/null 2>&1; then
+        _rc_term="screen${TERM#tmux}"
+      fi
+      ;;
+  esac
+  if infocmp "$_rc_term" > /dev/null 2>&1; then
+    export TERM="$_rc_term"
+  fi
+  unset _rc_term
+fi
+
 # zsh keeps SAVEHIST entries in the file, bash keeps HISTFILESIZE.
 HISTSIZE=99999
 SAVEHIST=$HISTSIZE
