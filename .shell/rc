@@ -117,10 +117,38 @@ HISTFILESIZE=$HISTSIZE
 if [ "$_rc_shell" = zsh ]; then
   typeset -gU fpath
   if [ -n "$HOMEBREW_PREFIX" ]; then
-    fpath=("$HOMEBREW_PREFIX/share/zsh/site-functions" $fpath)
+    # zsh-completions adds definitions that zsh lacks (e.g. yarn, bundle).
+    fpath=(
+      "$HOMEBREW_PREFIX/share/zsh/site-functions"
+      "$HOMEBREW_PREFIX/share/zsh-completions"
+      $fpath
+    )
   fi
+  setopt COMPLETE_IN_WORD ALWAYS_TO_END
   autoload -Uz compinit
   compinit
+  zstyle ':completion:*' menu select
+  # Case-insensitive first, then partial words (f.b -> foo.bar), then substrings.
+  zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' 'm:{[:upper:]}={[:lower:]}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+  # Fall back to correcting typos; one error is allowed per three characters.
+  zstyle ':completion:*' completer _complete _match _approximate
+  zstyle ':completion:*:match:*' original only
+  zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX)/3>7?7:($#PREFIX+$#SUFFIX)/3))numeric)'
+  zstyle ':completion:*' group-name ''
+  zstyle ':completion:*' verbose yes
+  zstyle ':completion:*:options' description yes
+  zstyle ':completion:*:options' auto-description '%d'
+  zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
+  zstyle ':completion:*:corrections' format ' %F{green}-- %d (errors: %e) --%f'
+  zstyle ':completion:*:messages' format ' %F{magenta} -- %d --%f'
+  zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
+  # Evaluated on use, since LS_COLORS is set further below.
+  zstyle -e ':completion:*:default' list-colors 'reply=(${(s.:.)LS_COLORS})'
+  zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+  zstyle ':completion:*' squeeze-slashes true
+  zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
+  zstyle ':completion:*' use-cache on
+  zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompcache"
 
   setopt CORRECT
   setopt INTERACTIVE_COMMENTS
@@ -196,6 +224,18 @@ if [ "$_rc_shell" = bash ]; then
   # (e.g. tar and ssh completions abort in bash-completion 2.11).
   # globstar needs bash 4+; macOS /bin/bash is 3.2.
   shopt -s globstar 2> /dev/null
+
+  for _rc_completion in \
+    "${HOMEBREW_PREFIX:+$HOMEBREW_PREFIX/etc/profile.d/bash_completion.sh}" \
+    /usr/share/bash-completion/bash_completion \
+    /etc/bash_completion
+  do
+    if [ -r "$_rc_completion" ]; then
+      . "$_rc_completion"
+      break
+    fi
+  done
+  unset _rc_completion
 
   # bash 3.2 (macOS /bin/bash) reads the timestamp lines that bash 4+ writes as
   # commands, so keep its history apart.
@@ -276,6 +316,10 @@ function m3u8() {
 
 # init *env
 if command -v asdf > /dev/null; then
+  # zsh gets _asdf from Homebrew's site-functions.
+  if [ "$_rc_shell" = bash ]; then
+    eval "$(asdf completion bash)"
+  fi
   _rc_java_home="${ASDF_DATA_DIR:-$HOME/.asdf}/plugins/java/set-java-home.$_rc_shell"
   if [ -f "$_rc_java_home" ]; then
     . "$_rc_java_home"

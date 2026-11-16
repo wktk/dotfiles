@@ -42,7 +42,13 @@ if [ "$(uname)" = "Darwin" ] && command -v brew > /dev/null; then
     font-udev-gothic-nf \
     fzf \
     zoxide \
+    zsh-completions \
 
+  # compinit rejects zsh-completions while its parent directory is group-writable.
+  # Only the owner can change it, e.g. not when another user installed Homebrew.
+  if [ -O "$(brew --prefix)/share" ]; then
+    chmod go-w "$(brew --prefix)/share"
+  fi
 fi
 
 for dotfile in $DOTFILES; do

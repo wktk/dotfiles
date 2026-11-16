@@ -3,6 +3,17 @@ $include /etc/inputrc
 
 # Other programs using readline (irb, psql, python) read this file too.
 $if Bash
+  set completion-ignore-case on
+  # Tab completes the common prefix and lists the candidates, then cycles
+  # through them; Shift-Tab cycles backward.
+  set show-all-if-ambiguous on
+  set menu-complete-display-prefix on
+  TAB: menu-complete
+  "\e[Z": menu-complete-backward
+  set colored-stats on
+  set colored-completion-prefix on
+  set mark-symlinked-directories on
+
   "\e[A": history-substring-search-backward
   "\eOA": history-substring-search-backward
   "\C-p": history-substring-search-backward
