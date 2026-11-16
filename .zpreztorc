@@ -32,9 +32,7 @@ zstyle ':prezto:*:*' color 'yes'
 zstyle ':prezto:load' pmodule \
   'terminal' \
   'editor' \
-  'spectrum' \
-  'git' \
-  'prompt'
+  'spectrum'
 
 #
 # Autosuggestions

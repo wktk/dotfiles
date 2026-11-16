@@ -314,6 +314,47 @@ function m3u8() {
   ffmpeg -allowed_extensions ALL -protocol_whitelist file,http,https,tcp,tls,crypto -i "$1" -movflags faststart -c copy -bsf:a aac_adtstoasc "$1.mp4"
 }
 
+# Prompt: [user@host ]~/path[ branch[|action][*][+]] $
+# One implementation for both shells, so bash on Linux shows the same as zsh.
+# * marks unstaged changes and + staged changes.
+_rc_git_prompt() {
+  local out git_dir branch action flags
+  out=$(git rev-parse --git-dir --is-inside-work-tree 2> /dev/null) || return 0
+  # The last line is true/false; the git dir may contain spaces.
+  git_dir=${out%[[:space:]]*}
+  branch=$(git symbolic-ref --short -q HEAD 2> /dev/null) ||
+    branch=$(git rev-parse --short HEAD 2> /dev/null)
+  if [ -d "$git_dir/rebase-merge" ] || [ -d "$git_dir/rebase-apply" ]; then
+    action=rebase
+  elif [ -f "$git_dir/MERGE_HEAD" ]; then
+    action=merge
+  elif [ -f "$git_dir/CHERRY_PICK_HEAD" ]; then
+    action=cherry-pick
+  elif [ -f "$git_dir/REVERT_HEAD" ]; then
+    action=revert
+  elif [ -f "$git_dir/BISECT_LOG" ]; then
+    action=bisect
+  fi
+  case $out in
+    *true)
+      git diff --quiet 2> /dev/null || flags='*'
+      git diff --cached --quiet 2> /dev/null || flags="$flags+"
+      ;;
+  esac
+  # zsh would expand % sequences in a branch name inside the prompt.
+  if [ -n "$ZSH_VERSION" ]; then
+    branch=${branch//\%/%%}
+  fi
+  printf ' %s%s%s' "$branch" "${action:+|$action}" "$flags"
+}
+
+if [ "$_rc_shell" = zsh ]; then
+  setopt PROMPT_SUBST
+  PROMPT='${SSH_CONNECTION:+%n@%m }%F{blue}%~%f%F{green}$(_rc_git_prompt)%f %(!.#.$) '
+else
+  PS1='${SSH_CONNECTION:+\u@\h }\[\e[34m\]\w\[\e[0m\]\[\e[32m\]$(_rc_git_prompt)\[\e[0m\] \$ '
+fi
+
 # init *env
 if command -v asdf > /dev/null; then
   # zsh gets _asdf from Homebrew's site-functions.
