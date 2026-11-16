@@ -19,7 +19,6 @@ DOTFILES="
   .zprezto
   .zlogin
   .zlogout
-  .zpreztorc
   .zshenv
   .zshrc
 "

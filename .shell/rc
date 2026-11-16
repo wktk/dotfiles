@@ -115,6 +115,30 @@ SAVEHIST=$HISTSIZE
 HISTFILESIZE=$HISTSIZE
 
 if [ "$_rc_shell" = zsh ]; then
+  # zsh picks vi key bindings when EDITOR contains "vi"; keep emacs ones.
+  bindkey -e
+  # Ctrl-W deletes back to "/" or "=" instead of the whole path.
+  WORDCHARS='*?_-.[]~&;!#$%^(){}<>'
+  # Keys that zsh leaves unbound. Each one is sent differently depending on
+  # the terminal and its keypad mode.
+  bindkey '^[[H' beginning-of-line
+  bindkey '^[OH' beginning-of-line
+  bindkey '^[[1~' beginning-of-line
+  bindkey '^[[F' end-of-line
+  bindkey '^[OF' end-of-line
+  bindkey '^[[4~' end-of-line
+  bindkey '^[[3~' delete-char
+  # Word moves with Ctrl or Option/Alt + arrows (and Esc b / Esc f).
+  bindkey '^[[1;5D' emacs-backward-word
+  bindkey '^[[1;5C' emacs-forward-word
+  bindkey '^[[1;3D' emacs-backward-word
+  bindkey '^[[1;3C' emacs-forward-word
+  bindkey '^[^[[D' emacs-backward-word
+  bindkey '^[^[[C' emacs-forward-word
+  bindkey '^[b' emacs-backward-word
+  bindkey '^[f' emacs-forward-word
+  bindkey '^[[Z' reverse-menu-complete
+
   typeset -gU fpath
   if [ -n "$HOMEBREW_PREFIX" ]; then
     # zsh-completions adds definitions that zsh lacks (e.g. yarn, bundle).
