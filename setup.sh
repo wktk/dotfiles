@@ -38,8 +38,11 @@ for dotfile in $DOTFILES $RETIRED; do
   case "$target" in
     "$(pwd)"/*) continue ;;
   esac
-  if [ -f "$(dirname "$target")/setup.sh" ]; then
-    echo "Abort: $HOME/$dotfile links to $(dirname "$target"); run setup.sh there." >&2
+  # Entries may be nested (e.g. .claude/statusline-command.sh), so strip the
+  # whole entry path to get the clone that the link points into.
+  clone="${target%/$dotfile}"
+  if [ "$clone" != "$target" ] && [ -f "$clone/setup.sh" ]; then
+    echo "Abort: $HOME/$dotfile links to $clone; run setup.sh there." >&2
     exit 1
   fi
 done
