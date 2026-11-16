@@ -88,7 +88,10 @@ Plug 'Shadowsith/kotlincomplete.vim'
 
 " Languages -- others
 Plug 'hashivim/vim-terraform'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" vim-go needs Vim 8.2.5072+ or Neovim 0.4.0+ and warns on every start otherwise.
+if has('patch-8.2.5072') || has('nvim-0.4.0')
+  Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+endif
 Plug 'darfink/vim-plist'
 Plug 'mechatroner/rainbow_csv'
 Plug 'pearofducks/ansible-vim'
