@@ -1,20 +1,20 @@
 # aliases
 if [ "$(uname)" = "Darwin" ]; then
   alias ls='ls -G'
+  alias dr='sudo killall -HUP mDNSResponder'
+  alias docker-desktop='open /Applications/Docker.app'
+  alias nosleep='sudo pmset -a disablesleep 1'
+  alias nonosleep='sudo pmset -a disablesleep 0'
+  alias od='docker-desktop'
+  alias qd="osascript -e 'quit app \"Docker Desktop\"'"
 else
   alias ls='ls --color=auto'
 fi
 
-alias dr='sudo killall -HUP mDNSResponder'
-alias docker-desktop='open /Applications/Docker.app'
 alias gf='git switch $(basename $(git rev-parse --abbrev-ref origin/HEAD)) && git pull --prune && git merged-branch'
 alias ll='ls -laFh'
 alias vi='vim'
 alias d='dig +noedns'
-alias nosleep='sudo pmset -a disablesleep 1'
-alias nonosleep='sudo pmset -a disablesleep 0'
-alias od='docker-desktop'
-alias qd='osascript -e ''quit app "Docker Desktop"'''
 
 function mkcd() {
   mkdir -p "$1"
