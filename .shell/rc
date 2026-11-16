@@ -392,7 +392,7 @@ function m3u8() {
   ffmpeg -allowed_extensions ALL -protocol_whitelist file,http,https,tcp,tls,crypto -i "$1" -movflags faststart -c copy -bsf:a aac_adtstoasc "$1.mp4"
 }
 
-# Prompt: [user@host ]~/path[ branch[|action][*][+][↑N][↓N]] $
+# Prompt: [user@host:]~/path[ branch[|action][*][+][↑N][↓N]] $
 # One implementation for both shells, so bash on Linux shows the same as zsh.
 # * marks unstaged changes and + staged changes.
 _rc_git_prompt() {
@@ -441,12 +441,13 @@ _rc_git_prompt() {
   fi
 }
 
-# The path is cyan in zsh and magenta in bash, to tell the shells apart.
+# The path is cyan in zsh and magenta in bash, to tell the shells apart;
+# user@host (over ssh only) is white.
 if [ "$_rc_shell" = zsh ]; then
   setopt PROMPT_SUBST
-  PROMPT='${SSH_CONNECTION:+%n@%m }%F{cyan}%~%f%F{green}$(_rc_git_prompt)%f %(!.#.$) '
+  PROMPT='${SSH_CONNECTION:+%7F%n@%m:%f}%F{cyan}%~%f%F{green}$(_rc_git_prompt)%f %(!.#.$) '
 else
-  PS1='${SSH_CONNECTION:+\u@\h }\[\e[35m\]\w\[\e[0m\]\[\e[32m\]$(_rc_git_prompt)\[\e[0m\] \$ '
+  PS1='${SSH_CONNECTION:+\[\e[37m\]\u@\h:\[\e[0m\]}\[\e[35m\]\w\[\e[0m\]\[\e[32m\]$(_rc_git_prompt)\[\e[0m\] \$ '
 fi
 
 # init *env
