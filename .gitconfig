@@ -2,7 +2,6 @@
 	email = k.wakitani@gmail.com
 	name = k.wakitani
 [core]
-	excludesfile = ~/.gitignore_global
 	precomposeUnicode = true
 	commentChar = ";"
 [include]

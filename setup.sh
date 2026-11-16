@@ -10,6 +10,7 @@ DOTFILES="
   .bashrc
   .bin
   .claude/statusline-command.sh
+  .config/git/ignore
   .gitconfig
   .inputrc
   .tmux
@@ -43,6 +44,18 @@ for dotfile in $DOTFILES $RETIRED; do
   clone="${target%/$dotfile}"
   if [ "$clone" != "$target" ] && [ -f "$clone/setup.sh" ]; then
     echo "Abort: $HOME/$dotfile links to $clone; run setup.sh there." >&2
+    exit 1
+  fi
+done
+
+# Other tools also write to these, so an existing file is merged into this
+# repository by hand rather than renamed to .bak.
+MERGE_BY_HAND="
+  .config/git/ignore
+"
+for dotfile in $MERGE_BY_HAND; do
+  if [ -f "$HOME/$dotfile" ] && [ ! -h "$HOME/$dotfile" ] && ! cmp -s "$HOME/$dotfile" "$dotfile"; then
+    echo "Abort: merge $HOME/$dotfile into $(pwd)/$dotfile, remove it, and run setup.sh again." >&2
     exit 1
   fi
 done
