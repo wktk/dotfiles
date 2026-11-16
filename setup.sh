@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# The links and the cleanup below use paths relative to this repository.
+cd "$(dirname "$0")" || exit 1
+
 DOTFILES="
   .actrc
   .asdfrc
@@ -25,17 +28,23 @@ RETIRED="
   .oh-my-zsh
 "
 
-git submodule update --init --recursive
-brew tap homebrew/cask-fonts
-brew install \
-  asdf \
-  font-hack-nerd-font \
-  font-hackgen-nerd \
-  font-biz-udgothic \
-  font-udev-gothic \
-  font-udev-gothic-nf \
-  fzf \
-  zoxide \
+# Servers may get a copy of this repository without .git (e.g. via rsync).
+if [ -e .git ]; then
+  git submodule update --init --recursive
+fi
+
+if [ "$(uname)" = "Darwin" ] && command -v brew > /dev/null; then
+  brew install \
+    asdf \
+    font-hack-nerd-font \
+    font-hackgen-nerd \
+    font-biz-udgothic \
+    font-udev-gothic \
+    font-udev-gothic-nf \
+    fzf \
+    zoxide \
+
+fi
 
 for dotfile in $DOTFILES; do
   if [ -h "$HOME/$dotfile" ]; then
