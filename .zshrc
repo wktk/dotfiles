@@ -22,14 +22,6 @@ autoload -Uz compinit
 compinit
 # End of lines added by compinstall
 
-# Load direnv
-type direnv > /dev/null && eval "$(direnv hook zsh)"
-
-if [ -f /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin/gcloud ];then
-  source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
-  source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
-fi
-
 # Load my old settings
 . ~/.bashrc
 
