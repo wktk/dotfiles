@@ -5,6 +5,109 @@ else
   _rc_shell=bash
 fi
 
+# PATH and environment variables come before the interactive check below, so
+# that non-interactive bash started by sshd (`ssh host command`) gets them too.
+
+# Set HOMEBREW_PREFIX here instead of relying on `brew shellenv`, which prints
+# nothing when PATH already starts with Homebrew's bin and sbin.
+if [ -z "$HOMEBREW_PREFIX" ]; then
+  for _rc_brew in /opt/homebrew /usr/local /home/linuxbrew/.linuxbrew; do
+    if [ -x "$_rc_brew/bin/brew" ]; then
+      HOMEBREW_PREFIX="$_rc_brew"
+      break
+    fi
+  done
+  unset _rc_brew
+fi
+[ -n "$HOMEBREW_PREFIX" ] && export HOMEBREW_PREFIX
+
+# Rebuild PATH with these directories first, followed by the inherited entries
+# without duplicates. Login shells move them to the front even when present:
+# macOS path_helper (/etc/zprofile, /etc/profile) has just pushed inherited
+# entries behind /usr/bin. Other shells inherit PATH from a parent that already
+# ran this, so they add only missing ones and keep what a parent put first on
+# purpose (e.g. an activated venv).
+_rc_path_add() {
+  case ":$_rc_path:" in
+    *":$1:"*) ;;
+    *) _rc_path="${_rc_path:+$_rc_path:}$1" ;;
+  esac
+}
+
+_rc_login=
+if [ "$_rc_shell" = zsh ]; then
+  [[ -o login ]] && _rc_login=1
+else
+  shopt -q login_shell && _rc_login=1
+fi
+
+_rc_path=
+# Listed from the highest to the lowest priority.
+for _rc_dir in \
+  "${ASDF_DATA_DIR:-$HOME/.asdf}/shims" \
+  "$HOME/.antigravity/antigravity/bin" \
+  /opt/local/bin \
+  /opt/local/sbin \
+  "$HOME/.cargo/bin" \
+  "$HOME/.bin" \
+  "$HOME/go/bin" \
+  "${HOMEBREW_PREFIX:+$HOMEBREW_PREFIX/bin}" \
+  "${HOMEBREW_PREFIX:+$HOMEBREW_PREFIX/sbin}" \
+  "$HOME/bin" \
+  "$HOME/.local/bin"
+do
+  [ -d "$_rc_dir" ] || continue
+  if [ -z "$_rc_login" ]; then
+    case ":$PATH:" in
+      *":$_rc_dir:"*) continue ;;
+    esac
+  fi
+  _rc_path_add "$_rc_dir"
+done
+
+_rc_rest="$PATH:"
+while [ -n "$_rc_rest" ]; do
+  _rc_dir="${_rc_rest%%:*}"
+  _rc_rest="${_rc_rest#*:}"
+  [ -n "$_rc_dir" ] && _rc_path_add "$_rc_dir"
+done
+export PATH="$_rc_path"
+unset _rc_path _rc_rest _rc_dir _rc_login
+unset -f _rc_path_add
+
+export EDITOR=vim
+export VISUAL=vim
+export PAGER=less
+export LESS='-F -i -M -R -X'
+# Only when the locale is installed; otherwise every program warns via setlocale.
+if [ -z "$LANG" ] && locale -a 2> /dev/null | grep -qiE '^en_US\.utf-?8$'; then
+  export LANG=en_US.UTF-8
+fi
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
+if [ -z "$LESSOPEN" ] && command -v lesspipe > /dev/null; then
+  export LESSOPEN="| /usr/bin/env lesspipe %s 2>&-"
+fi
+
+# Non-interactive shells only need PATH and the environment variables above;
+# stop here so that nothing below runs or prints (e.g. for scp).
+case $- in
+  *i*) ;;
+  *)
+    unset _rc_shell
+    return
+    ;;
+esac
+
+if [ "$_rc_shell" = zsh ]; then
+  typeset -gU fpath
+  if [ -n "$HOMEBREW_PREFIX" ]; then
+    fpath=("$HOMEBREW_PREFIX/share/zsh/site-functions" $fpath)
+  fi
+  autoload -Uz compinit
+  compinit
+fi
+
 # aliases
 if [ "$(uname)" = "Darwin" ]; then
   alias ls='ls -G'
@@ -45,30 +148,13 @@ function m3u8() {
   ffmpeg -allowed_extensions ALL -protocol_whitelist file,http,https,tcp,tls,crypto -i "$1" -movflags faststart -c copy -bsf:a aac_adtstoasc "$1.mp4"
 }
 
-# env vars
-export EDITOR="vim"
-
-# custom bin
-export PATH="$HOME/.bin:$HOME/go/bin:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
-export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
-
 # init *env
-if which asdf > /dev/null; then
-  . $(brew --prefix asdf)/libexec/asdf.sh
-
-  if [ -n "$BASH" ]; then
-    . $(brew --prefix asdf)/etc/bash_completion.d/asdf.bash
+if command -v asdf > /dev/null; then
+  _rc_java_home="${ASDF_DATA_DIR:-$HOME/.asdf}/plugins/java/set-java-home.$_rc_shell"
+  if [ -f "$_rc_java_home" ]; then
+    . "$_rc_java_home"
   fi
-
-  if [ -f ~/.asdf/plugins/java/set-java-home.bash ]; then
-    if [ -n "$BASH" ]; then
-      . ~/.asdf/plugins/java/set-java-home.bash
-    elif [ -n "$ZSH_NAME" ]; then
-      . ~/.asdf/plugins/java/set-java-home.zsh
-    fi
-  fi
+  unset _rc_java_home
 fi
 
 if [ -f "$HOME/.profile_local" ]; then
@@ -94,9 +180,5 @@ elif command -v fzf > /dev/null && [ -f /usr/share/doc/fzf/examples/key-bindings
   . /usr/share/doc/fzf/examples/key-bindings.$_rc_shell
 fi
 unset _rc_fzf
-
-if [ -f "$HOME/.cargo/env" ]; then
-  . "$HOME/.cargo/env"
-fi
 
 unset _rc_shell

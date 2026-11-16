@@ -10,18 +10,6 @@ SAVEHIST=99999
 setopt appendhistory
 bindkey -e
 # End of lines configured by zsh-newuser-install
-# The following lines were added by compinstall
-zstyle :compinstall filename '/Users/user/.zshrc'
-
-if type brew &>/dev/null
-then
-  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
-fi
-
-autoload -Uz compinit
-compinit
-# End of lines added by compinstall
-
 # Load my old settings
 . ~/.bashrc
 
