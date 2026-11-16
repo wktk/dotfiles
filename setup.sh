@@ -36,8 +36,6 @@ fi
 if [ "$(uname)" = "Darwin" ] && command -v brew > /dev/null; then
   brew install \
     asdf \
-    font-hack-nerd-font \
-    font-hackgen-nerd \
     font-biz-udgothic \
     font-udev-gothic \
     font-udev-gothic-nf \
