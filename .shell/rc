@@ -416,4 +416,16 @@ elif command -v fzf > /dev/null && [ -f /usr/share/doc/fzf/examples/key-bindings
 fi
 unset _rc_fzf
 
+if [ "$TERM_PROGRAM" = vscode ]; then
+  # Agents in the VS Code terminal read command output directly; a pager
+  # would wait for input.
+  export GH_PAGER="" GIT_PAGER=""
+  # Shell integration lets Copilot detect when a command has finished.
+  if command -v code > /dev/null; then
+    _rc_vscode="$(code --locate-shell-integration-path $_rc_shell)"
+    [ -f "$_rc_vscode" ] && . "$_rc_vscode"
+    unset _rc_vscode
+  fi
+fi
+
 unset _rc_shell
