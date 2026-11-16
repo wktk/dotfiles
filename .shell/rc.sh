@@ -393,14 +393,14 @@ function m3u8() {
   ffmpeg -allowed_extensions ALL -protocol_whitelist file,http,https,tcp,tls,crypto -i "$1" -movflags faststart -c copy -bsf:a aac_adtstoasc "$1.mp4"
 }
 
-# Prompt: [user@host:]~/path[ branch][|action][*][+][↑N][↓N] $
+# Prompt: [user@host:]~/path[ branch][|action][*][+][?][↑N][↓N] $
 # When the top-level directory of the work tree ends with the branch name
 # (e.g. a worktree at .../issues/3290 on branch issues/3290), that part of the
 # path is shown in the branch color instead of repeating the name after it.
 # One implementation for both shells, so bash on Linux shows the same as zsh.
-# * marks unstaged changes and + staged changes.
+# * marks unstaged changes, + staged changes and ? untracked files.
 _rc_prompt_dir() {
-  local dir c_dir c_git c_sync out nl git_dir inside prefix branch action flags counts ahead behind sync tail
+  local dir c_dir c_git c_sync out nl git_dir inside prefix st branch action flags ab ahead behind sync tail
   if [ -n "$ZSH_VERSION" ]; then
     # What %~ shows; % has to be escaped, as the prompt expands it again.
     dir=${(%):-%~}
@@ -427,8 +427,49 @@ _rc_prompt_dir() {
     *"$nl"*) prefix=${out#*"$nl"} ;;
   esac
   prefix=${prefix%/}
-  branch=$(git symbolic-ref --short -q HEAD 2> /dev/null) ||
-    branch=$(git rev-parse --short HEAD 2> /dev/null)
+  if [ "$inside" = true ]; then
+    # One command for the branch, upstream counts and changes. --porcelain=v2
+    # needs git 2.11+. Headers look like "# branch.head <name>"; change lines
+    # start with "1 XY" or "2 XY" (X staged, Y unstaged, "." unchanged),
+    # "u " for conflicts and "? " for untracked files.
+    st="$nl$(git status --porcelain=v2 --branch 2> /dev/null)$nl"
+    branch=${st#*"$nl# branch.head "}
+    branch=${branch%%"$nl"*}
+    if [ "$branch" = "(detached)" ]; then
+      branch=${st#*"$nl# branch.oid "}
+      branch=$(printf '%.7s' "${branch%%"$nl"*}")
+    fi
+    # git before 2.11 (e.g. on rental servers) lacks --porcelain=v2; show at
+    # least the branch there.
+    if [ -z "$branch" ]; then
+      branch=$(git symbolic-ref --short -q HEAD 2> /dev/null) ||
+        branch=$(git rev-parse --short HEAD 2> /dev/null)
+    fi
+    case $st in
+      *"$nl"[12]" "?[!.]* | *"$nl"u" "*) flags='*' ;;
+    esac
+    case $st in
+      *"$nl"[12]" "[!.]*) flags="$flags+" ;;
+    esac
+    case $st in
+      *"$nl? "*) flags="$flags?" ;;
+    esac
+    # Commits ahead of (↑) and behind (↓) the upstream, as of the last fetch.
+    case $st in
+      *"$nl# branch.ab "*)
+        ab=${st#*"$nl# branch.ab +"}
+        ab=${ab%%"$nl"*}
+        ahead=${ab%% *}
+        behind=${ab#* -}
+        [ "$ahead" -gt 0 ] && sync="↑$ahead"
+        [ "$behind" -gt 0 ] && sync="$sync↓$behind"
+        ;;
+    esac
+  else
+    # Inside .git, where git status does not work.
+    branch=$(git symbolic-ref --short -q HEAD 2> /dev/null) ||
+      branch=$(git rev-parse --short HEAD 2> /dev/null)
+  fi
   if [ -d "$git_dir/rebase-merge" ] || [ -d "$git_dir/rebase-apply" ]; then
     action=rebase
   elif [ -f "$git_dir/MERGE_HEAD" ]; then
@@ -439,20 +480,6 @@ _rc_prompt_dir() {
     action=revert
   elif [ -f "$git_dir/BISECT_LOG" ]; then
     action=bisect
-  fi
-  case $inside in
-    true)
-      git diff --quiet 2> /dev/null || flags='*'
-      git diff --cached --quiet 2> /dev/null || flags="$flags+"
-      ;;
-  esac
-  # Commits ahead of (↑) and behind (↓) the upstream, as of the last fetch.
-  counts=$(git rev-list --count --left-right '@{u}...HEAD' 2> /dev/null)
-  if [ -n "$counts" ]; then
-    behind=${counts%[[:space:]]*}
-    ahead=${counts#*[[:space:]]}
-    [ "$ahead" -gt 0 ] && sync="↑$ahead"
-    [ "$behind" -gt 0 ] && sync="$sync↓$behind"
   fi
   if [ -n "$ZSH_VERSION" ]; then
     branch=${branch//\%/%%}
