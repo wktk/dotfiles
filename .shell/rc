@@ -109,6 +109,11 @@ case $- in
     ;;
 esac
 
+# zsh keeps SAVEHIST entries in the file, bash keeps HISTFILESIZE.
+HISTSIZE=99999
+SAVEHIST=$HISTSIZE
+HISTFILESIZE=$HISTSIZE
+
 if [ "$_rc_shell" = zsh ]; then
   typeset -gU fpath
   if [ -n "$HOMEBREW_PREFIX" ]; then
@@ -123,6 +128,67 @@ if [ "$_rc_shell" = zsh ]; then
   setopt NO_BG_NICE
   # Keep `=word` literal as in bash, instead of expanding it to a command path.
   setopt NO_EQUALS
+
+  HISTFILE=~/.histfile
+  setopt EXTENDED_HISTORY SHARE_HISTORY HIST_IGNORE_ALL_DUPS HIST_IGNORE_SPACE HIST_VERIFY
+
+  # Up/Down (and ^P/^N) step through history entries that contain what was
+  # typed before the first press, like bash's history-substring-search-*
+  # bound in .inputrc.
+  _rc_history_substring_search() {
+    emulate -L zsh
+    # Matching entries are collected once per search; repeated presses reuse them.
+    if [[ $LASTWIDGET != _rc_history_substring_search_* ]]; then
+      _rc_hss_query=$BUFFER
+      _rc_hss_index=$HISTCMD
+      _rc_hss_keys=(${(k)history[(R)*${(b)_rc_hss_query}*]})
+    fi
+    # In a multi-line buffer, move between its lines first.
+    if [[ $1 == up && $LBUFFER == *$'\n'* ]]; then
+      zle up-line
+      return
+    elif [[ $1 == down && $RBUFFER == *$'\n'* ]]; then
+      zle down-line
+      return
+    fi
+    if [[ -z $_rc_hss_query ]]; then
+      zle $1-line-or-history
+      return
+    fi
+    local k
+    if [[ $1 == up ]]; then
+      for k in ${(On)_rc_hss_keys}; do
+        if (( k < _rc_hss_index )); then
+          _rc_hss_index=$k
+          BUFFER=$history[$k]
+          CURSOR=$#BUFFER
+          return
+        fi
+      done
+    else
+      for k in ${(on)_rc_hss_keys}; do
+        if (( k > _rc_hss_index )); then
+          _rc_hss_index=$k
+          BUFFER=$history[$k]
+          CURSOR=$#BUFFER
+          return
+        fi
+      done
+      _rc_hss_index=$HISTCMD
+      BUFFER=$_rc_hss_query
+      CURSOR=$#BUFFER
+    fi
+  }
+  _rc_history_substring_search_up() { _rc_history_substring_search up; }
+  _rc_history_substring_search_down() { _rc_history_substring_search down; }
+  zle -N _rc_history_substring_search_up
+  zle -N _rc_history_substring_search_down
+  bindkey '^[[A' _rc_history_substring_search_up
+  bindkey '^[OA' _rc_history_substring_search_up
+  bindkey '^P' _rc_history_substring_search_up
+  bindkey '^[[B' _rc_history_substring_search_down
+  bindkey '^[OB' _rc_history_substring_search_down
+  bindkey '^N' _rc_history_substring_search_down
 fi
 
 if [ "$_rc_shell" = bash ]; then
@@ -130,6 +196,26 @@ if [ "$_rc_shell" = bash ]; then
   # (e.g. tar and ssh completions abort in bash-completion 2.11).
   # globstar needs bash 4+; macOS /bin/bash is 3.2.
   shopt -s globstar 2> /dev/null
+
+  # bash 3.2 (macOS /bin/bash) reads the timestamp lines that bash 4+ writes as
+  # commands, so keep its history apart.
+  if [ "${BASH_VERSINFO[0]}" -lt 4 ]; then
+    HISTFILE=~/.bash_history_bash3
+  fi
+  HISTCONTROL=ignoreboth:erasedups
+  HISTTIMEFORMAT='%F %T '
+  shopt -s histappend histverify
+  # Share history between running shells, as zsh's SHARE_HISTORY does: save
+  # new entries and reload the file before each prompt.
+  _rc_history_sync() {
+    history -a
+    history -c
+    history -r
+  }
+  case ";$PROMPT_COMMAND;" in
+    *";_rc_history_sync;"*) ;;
+    *) PROMPT_COMMAND="_rc_history_sync${PROMPT_COMMAND:+;$PROMPT_COMMAND}" ;;
+  esac
 fi
 
 # aliases

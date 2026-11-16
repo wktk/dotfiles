@@ -32,10 +32,8 @@ zstyle ':prezto:*:*' color 'yes'
 zstyle ':prezto:load' pmodule \
   'terminal' \
   'editor' \
-  'history' \
   'spectrum' \
   'completion' \
-  'history-substring-search' \
   'git' \
   'prompt'
 

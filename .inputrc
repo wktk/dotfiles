@@ -1,0 +1,12 @@
+# A personal ~/.inputrc replaces /etc/inputrc, so keep the system bindings.
+$include /etc/inputrc
+
+# Other programs using readline (irb, psql, python) read this file too.
+$if Bash
+  "\e[A": history-substring-search-backward
+  "\eOA": history-substring-search-backward
+  "\C-p": history-substring-search-backward
+  "\e[B": history-substring-search-forward
+  "\eOB": history-substring-search-forward
+  "\C-n": history-substring-search-forward
+$endif

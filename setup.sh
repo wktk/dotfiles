@@ -10,6 +10,7 @@ DOTFILES="
   .bashrc
   .bin
   .gitconfig
+  .inputrc
   .tmux
   .tmux.conf
   .tmux-pbcopy.conf

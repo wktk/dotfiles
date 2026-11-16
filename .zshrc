@@ -3,13 +3,8 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-# Lines configured by zsh-newuser-install
-HISTFILE=~/.histfile
-HISTSIZE=99999
-SAVEHIST=99999
-setopt appendhistory
 bindkey -e
-# End of lines configured by zsh-newuser-install
+
 # Load my old settings
 . ~/.bashrc
 
