@@ -372,11 +372,12 @@ _rc_git_prompt() {
   printf ' %s%s%s' "$branch" "${action:+|$action}" "$flags"
 }
 
+# The path is cyan in zsh and magenta in bash, to tell the shells apart.
 if [ "$_rc_shell" = zsh ]; then
   setopt PROMPT_SUBST
-  PROMPT='${SSH_CONNECTION:+%n@%m }%F{blue}%~%f%F{green}$(_rc_git_prompt)%f %(!.#.$) '
+  PROMPT='${SSH_CONNECTION:+%n@%m }%F{cyan}%~%f%F{green}$(_rc_git_prompt)%f %(!.#.$) '
 else
-  PS1='${SSH_CONNECTION:+\u@\h }\[\e[34m\]\w\[\e[0m\]\[\e[32m\]$(_rc_git_prompt)\[\e[0m\] \$ '
+  PS1='${SSH_CONNECTION:+\u@\h }\[\e[35m\]\w\[\e[0m\]\[\e[32m\]$(_rc_git_prompt)\[\e[0m\] \$ '
 fi
 
 # init *env
