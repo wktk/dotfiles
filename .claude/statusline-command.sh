@@ -9,7 +9,7 @@ seven_day=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // emp
 # Build git branch segment (skip optional locks)
 branch=$(git -C "$cwd" --no-optional-locks symbolic-ref --short HEAD 2>/dev/null)
 
-# Change indicators as in the shell prompt (.shell/rc): * for unstaged and
+# Change indicators as in the shell prompt (.shell/rc.sh): * for unstaged and
 # + for staged changes; untracked files are not counted
 flags=""
 if [ -n "$branch" ]; then

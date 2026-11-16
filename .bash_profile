@@ -1,1 +1,1 @@
-.shell/rc
+.shell/rc.sh

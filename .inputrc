@@ -14,7 +14,7 @@ $if Bash
   set colored-completion-prefix on
   set mark-symlinked-directories on
 
-  # Ctrl-W deletes back to "/" like zsh's WORDCHARS in .shell/rc. Without
+  # Ctrl-W deletes back to "/" like zsh's WORDCHARS in .shell/rc.sh. Without
   # turning off bind-tty-special-chars, the tty's werase wins over this.
   set bind-tty-special-chars off
   "\C-w": unix-filename-rubout
