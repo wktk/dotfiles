@@ -343,6 +343,7 @@ if [ "$(uname)" = "Darwin" ]; then
   alias docker-desktop='open /Applications/Docker.app'
   alias nosleep='sudo pmset -a disablesleep 1'
   alias nonosleep='sudo pmset -a disablesleep 0'
+  alias nosleepstatus="pmset -g | awk '/SleepDisabled/ { print \$2 }'"
   alias od='docker-desktop'
   alias qd="osascript -e 'quit app \"Docker Desktop\"'"
   alias pbc='pbcopy'
