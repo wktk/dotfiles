@@ -393,14 +393,40 @@ function m3u8() {
   ffmpeg -allowed_extensions ALL -protocol_whitelist file,http,https,tcp,tls,crypto -i "$1" -movflags faststart -c copy -bsf:a aac_adtstoasc "$1.mp4"
 }
 
-# Prompt: [user@host:]~/path[ branch[|action][*][+][↑N][↓N]] $
+# Prompt: [user@host:]~/path[ branch][|action][*][+][↑N][↓N] $
+# When the top-level directory of the work tree ends with the branch name
+# (e.g. a worktree at .../issues/3290 on branch issues/3290), that part of the
+# path is shown in the branch color instead of repeating the name after it.
 # One implementation for both shells, so bash on Linux shows the same as zsh.
 # * marks unstaged changes and + staged changes.
-_rc_git_prompt() {
-  local out git_dir branch action flags counts ahead behind sync
-  out=$(git rev-parse --git-dir --is-inside-work-tree 2> /dev/null) || return 0
-  # The last line is true/false; the git dir may contain spaces.
-  git_dir=${out%[[:space:]]*}
+_rc_prompt_dir() {
+  local dir c_dir c_git c_sync out nl git_dir inside prefix branch action flags counts ahead behind sync tail
+  if [ -n "$ZSH_VERSION" ]; then
+    # What %~ shows; % has to be escaped, as the prompt expands it again.
+    dir=${(%):-%~}
+    dir=${dir//\%/%%}
+    c_dir='%F{cyan}' c_git='%F{green}' c_sync='%F{yellow}'
+  else
+    # What \w shows (${PS1@P} would need bash 4.4+). \001 and \002 tell
+    # readline that the escape sequences take no width.
+    dir=${PWD/#$HOME/\~}
+    c_dir=$'\001\033[35m\002' c_git=$'\001\033[32m\002' c_sync=$'\001\033[33m\002'
+  fi
+  if ! out=$(git rev-parse --git-dir --is-inside-work-tree --show-prefix 2> /dev/null); then
+    printf '%s%s' "$c_dir" "$dir"
+    return 0
+  fi
+  # One value per line; the prefix (e.g. "src/" below the top level) is empty
+  # at the top level, and $(...) drops that trailing empty line.
+  nl='
+'
+  git_dir=${out%%"$nl"*}
+  out=${out#*"$nl"}
+  inside=${out%%"$nl"*}
+  case $out in
+    *"$nl"*) prefix=${out#*"$nl"} ;;
+  esac
+  prefix=${prefix%/}
   branch=$(git symbolic-ref --short -q HEAD 2> /dev/null) ||
     branch=$(git rev-parse --short HEAD 2> /dev/null)
   if [ -d "$git_dir/rebase-merge" ] || [ -d "$git_dir/rebase-apply" ]; then
@@ -414,8 +440,8 @@ _rc_git_prompt() {
   elif [ -f "$git_dir/BISECT_LOG" ]; then
     action=bisect
   fi
-  case $out in
-    *true)
+  case $inside in
+    true)
       git diff --quiet 2> /dev/null || flags='*'
       git diff --cached --quiet 2> /dev/null || flags="$flags+"
       ;;
@@ -428,17 +454,22 @@ _rc_git_prompt() {
     [ "$ahead" -gt 0 ] && sync="↑$ahead"
     [ "$behind" -gt 0 ] && sync="$sync↓$behind"
   fi
-  # zsh would expand % sequences in a branch name inside the prompt.
   if [ -n "$ZSH_VERSION" ]; then
     branch=${branch//\%/%%}
+    prefix=${prefix//\%/%%}
   fi
-  printf ' %s%s%s' "$branch" "${action:+|$action}" "$flags"
-  # Yellow; the prompt resets the color after this function's output.
-  if [ -n "$sync" ] && [ -n "$ZSH_VERSION" ]; then
-    printf '%%F{yellow}%s' "$sync"
-  elif [ -n "$sync" ]; then
-    # \001 and \002 tell readline that the escape sequence takes no width.
-    printf '\001\033[33m\002%s' "$sync"
+  tail="/$branch${prefix:+/$prefix}"
+  case $dir in
+    *"$tail")
+      printf '%s%s/%s%s%s%s' "$c_dir" "${dir%"$tail"}" "$c_git" "$branch" "$c_dir" "${prefix:+/$prefix}"
+      ;;
+    *)
+      printf '%s%s%s %s' "$c_dir" "$dir" "$c_git" "$branch"
+      ;;
+  esac
+  printf '%s%s%s' "$c_git" "${action:+|$action}" "$flags"
+  if [ -n "$sync" ]; then
+    printf '%s%s' "$c_sync" "$sync"
   fi
 }
 
@@ -446,9 +477,9 @@ _rc_git_prompt() {
 # user@host (over ssh only) is white.
 if [ "$_rc_shell" = zsh ]; then
   setopt PROMPT_SUBST
-  PROMPT='${SSH_CONNECTION:+%7F%n@%m:%f}%F{cyan}%~%f%F{green}$(_rc_git_prompt)%f %(!.#.$) '
+  PROMPT='${SSH_CONNECTION:+%7F%n@%m:%f}$(_rc_prompt_dir)%f %(!.#.$) '
 else
-  PS1='${SSH_CONNECTION:+\[\e[37m\]\u@\h:\[\e[0m\]}\[\e[35m\]\w\[\e[0m\]\[\e[32m\]$(_rc_git_prompt)\[\e[0m\] \$ '
+  PS1='${SSH_CONNECTION:+\[\e[37m\]\u@\h:\[\e[0m\]}$(_rc_prompt_dir)\[\e[0m\] \$ '
 fi
 
 # init *env
