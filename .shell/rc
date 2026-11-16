@@ -79,6 +79,16 @@ export EDITOR=vim
 export VISUAL=vim
 export PAGER=less
 export LESS='-F -i -M -R -X'
+# Colors for man pages. Debian's groff emits SGR escapes, which bypass these,
+# unless GROFF_NO_SGR is set; macOS's mandoc ignores it.
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[00;47;30m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;32m'
+export GROFF_NO_SGR=1
 # Only when the locale is installed; otherwise every program warns via setlocale.
 if [ -z "$LANG" ] && locale -a 2> /dev/null | grep -qiE '^en_US\.utf-?8$'; then
   export LANG=en_US.UTF-8
@@ -108,6 +118,9 @@ if [ "$_rc_shell" = zsh ]; then
   compinit
 
   setopt CORRECT
+  setopt INTERACTIVE_COMMENTS
+  # Run background jobs at normal priority, as bash does.
+  setopt NO_BG_NICE
   # Keep `=word` literal as in bash, instead of expanding it to a command path.
   setopt NO_EQUALS
 fi
