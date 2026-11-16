@@ -6,3 +6,15 @@
 	format = ssh
 [log]
 	showSignature = true
+# Only where an SSH key for GitHub is available: use SSH instead of HTTPS.
+# github: and wktk: need their own rules, since insteadOf rewrites are not
+# chained.
+[url "git@github.com:wktk/"]
+	insteadOf = wktk:
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+	insteadOf = github:
+[url "git@gist.github.com:"]
+	insteadOf = https://gist.github.com/wktk/
+[url "git@gist.github.com:"]
+	insteadOf = https://gist.github.com/

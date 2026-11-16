@@ -4,6 +4,8 @@
 [core]
 	precomposeUnicode = true
 	commentChar = ";"
+# Keep this before [url]: when two insteadOf rules match equally, git uses the
+# one read first, so ~/.gitconfig_local can override them (e.g. with SSH).
 [include]
 	path = ~/.gitconfig_local
 [alias]
@@ -14,12 +16,10 @@
 	fixup = commit --amend --no-edit
 	graph = log --graph --all --format='%x09%ad %h %d %ae%x09%s' --no-show-signature --date=short
 	pushf = push --force-with-lease --force-if-includes
-[url "git@github.com:"]
-	insteadOf = https://github.com/
-[url "git@gist.github.com:"]
-	insteadOf = https://gist.github.com/wktk/
-[url "git@gist.github.com:"]
-	insteadOf = https://gist.github.com/
+[url "https://github.com/"]
+	insteadOf = github:
+[url "https://github.com/wktk/"]
+	insteadOf = wktk:
 [gpg "x509"]
 	program = smimesign
 [stash]
