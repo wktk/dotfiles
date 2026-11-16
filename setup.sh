@@ -6,6 +6,7 @@ cd "$(dirname "$0")" || exit 1
 DOTFILES="
   .actrc
   .asdfrc
+  .bash_profile
   .bashrc
   .bin
   .gitconfig
