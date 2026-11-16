@@ -261,10 +261,46 @@ if [ "$_rc_shell" = bash ]; then
   done
   unset _rc_completion
 
+  # Not the default ~/.bash_history: a bash started without this rc (e.g.
+  # `bash --norc`) keeps only 500 entries and would truncate the file.
   # bash 3.2 (macOS /bin/bash) reads the timestamp lines that bash 4+ writes as
-  # commands, so keep its history apart.
+  # commands, so it gets a file of its own.
   if [ "${BASH_VERSINFO[0]}" -lt 4 ]; then
     HISTFILE=~/.bash_history_bash3
+  else
+    HISTFILE=~/.bash_history_shared
+    if [ ! -e "$HISTFILE" ] && [ -f ~/.bash_history ]; then
+      command cp ~/.bash_history "$HISTFILE"
+    fi
+
+    # erasedups works only within one shell, so once a day rewrite the file
+    # keeping the last occurrence of each command. A command another shell
+    # saves during the rewrite (a fraction of a second) can be lost.
+    # printf %(...)T needs bash 4.2+; older ones skip this.
+    printf -v _rc_now '%(%s)T' -1 2> /dev/null
+    _rc_mark="${XDG_CACHE_HOME:-$HOME/.cache}/bash_history_compacted_at"
+    _rc_last=
+    if [ -r "$_rc_mark" ]; then
+      read -r _rc_last < "$_rc_mark"
+    fi
+    case $_rc_last in
+      '' | *[!0-9]*) _rc_last=0 ;;
+    esac
+    if [ -n "$_rc_now" ] && [ $((_rc_now - _rc_last)) -ge 86400 ] && [ -s "$HISTFILE" ]; then
+      # Recorded first so that shells starting at the same time skip it.
+      mkdir -p "${_rc_mark%/*}" && echo "$_rc_now" >| "$_rc_mark"
+      awk -v max="$HISTSIZE" '
+        /^#[0-9]+$/ { n++; ts[n] = $0 "\n"; cmd[n] = ""; stamped = 1; next }
+        { if (!stamped) { n++; ts[n] = ""; cmd[n] = "" }; cmd[n] = cmd[n] $0 "\n" }
+        END {
+          for (i = 1; i <= n; i++) last[cmd[i]] = i
+          for (i = 1; i <= n; i++) if (cmd[i] != "" && last[cmd[i]] == i) keep[++m] = i
+          for (j = (m > max ? m - max + 1 : 1); j <= m; j++) printf "%s%s", ts[keep[j]], cmd[keep[j]]
+        }' "$HISTFILE" >| "$HISTFILE.$$" &&
+        command mv -f "$HISTFILE.$$" "$HISTFILE"
+      command rm -f "$HISTFILE.$$"
+    fi
+    unset _rc_now _rc_mark _rc_last
   fi
   HISTCONTROL=ignoreboth:erasedups
   HISTTIMEFORMAT='%F %T '
