@@ -374,11 +374,11 @@ function m3u8() {
   ffmpeg -allowed_extensions ALL -protocol_whitelist file,http,https,tcp,tls,crypto -i "$1" -movflags faststart -c copy -bsf:a aac_adtstoasc "$1.mp4"
 }
 
-# Prompt: [user@host ]~/path[ branch[|action][*][+]] $
+# Prompt: [user@host ]~/path[ branch[|action][*][+][↑N][↓N]] $
 # One implementation for both shells, so bash on Linux shows the same as zsh.
 # * marks unstaged changes and + staged changes.
 _rc_git_prompt() {
-  local out git_dir branch action flags
+  local out git_dir branch action flags counts ahead behind sync
   out=$(git rev-parse --git-dir --is-inside-work-tree 2> /dev/null) || return 0
   # The last line is true/false; the git dir may contain spaces.
   git_dir=${out%[[:space:]]*}
@@ -401,11 +401,26 @@ _rc_git_prompt() {
       git diff --cached --quiet 2> /dev/null || flags="$flags+"
       ;;
   esac
+  # Commits ahead of (↑) and behind (↓) the upstream, as of the last fetch.
+  counts=$(git rev-list --count --left-right '@{u}...HEAD' 2> /dev/null)
+  if [ -n "$counts" ]; then
+    behind=${counts%[[:space:]]*}
+    ahead=${counts#*[[:space:]]}
+    [ "$ahead" -gt 0 ] && sync="↑$ahead"
+    [ "$behind" -gt 0 ] && sync="$sync↓$behind"
+  fi
   # zsh would expand % sequences in a branch name inside the prompt.
   if [ -n "$ZSH_VERSION" ]; then
     branch=${branch//\%/%%}
   fi
   printf ' %s%s%s' "$branch" "${action:+|$action}" "$flags"
+  # Yellow; the prompt resets the color after this function's output.
+  if [ -n "$sync" ] && [ -n "$ZSH_VERSION" ]; then
+    printf '%%F{yellow}%s' "$sync"
+  elif [ -n "$sync" ]; then
+    # \001 and \002 tell readline that the escape sequence takes no width.
+    printf '\001\033[33m\002%s' "$sync"
+  fi
 }
 
 # The path is cyan in zsh and magenta in bash, to tell the shells apart.

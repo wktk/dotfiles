@@ -9,11 +9,12 @@ seven_day=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // emp
 # Build git branch segment (skip optional locks)
 branch=$(git -C "$cwd" --no-optional-locks symbolic-ref --short HEAD 2>/dev/null)
 
-# Dirty indicator: red * when there are uncommitted changes
-dirty=""
+# Change indicators as in the shell prompt (.shell/rc): * for unstaged and
+# + for staged changes; untracked files are not counted
+flags=""
 if [ -n "$branch" ]; then
-  git_status=$(git -C "$cwd" --no-optional-locks status --porcelain 2>/dev/null)
-  [ -n "$git_status" ] && dirty=1
+  git -C "$cwd" --no-optional-locks diff --quiet 2>/dev/null || flags="*"
+  git -C "$cwd" --no-optional-locks diff --cached --quiet 2>/dev/null || flags="$flags+"
 fi
 
 # Ahead/behind indicator: yellow ↑N / ↓N (skipped silently if no upstream)
@@ -29,14 +30,13 @@ if [ -n "$branch" ]; then
 fi
 
 # Build the status line
-# blue for cwd, cyan for git branch, dim for model
-printf "\033[34m%s\033[0m" "$(echo "$cwd" | sed "s|$HOME|~|")"
+# cyan for cwd and green for git as in the zsh prompt, Claude orange for model
+printf "\033[36m%s\033[0m" "$(echo "$cwd" | sed "s|$HOME|~|")"
 if [ -n "$branch" ]; then
-  printf " \033[32m%s\033[0m" "$branch"
-  [ -n "$dirty" ] && printf "\033[31m*\033[0m"
+  printf " \033[32m%s%s\033[0m" "$branch" "$flags"
   [ -n "$ahead_behind" ] && printf "%b" "$ahead_behind"
 fi
-printf " \033[36m%s\033[0m" "$model"
+printf " \033[38;5;173m%s\033[0m" "$model"
 [ -n "$used" ] && printf " \033[33mctx:%.0f%%\033[0m" "$used"
 [ -n "$five_hour" ] && printf " \033[35m5h:%.0f%%\033[0m" "$five_hour"
 [ -n "$seven_day" ] && printf " \033[35m7d:%.0f%%\033[0m" "$seven_day"
