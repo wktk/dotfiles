@@ -108,6 +108,15 @@ if [ "$_rc_shell" = zsh ]; then
   compinit
 
   setopt CORRECT
+  # Keep `=word` literal as in bash, instead of expanding it to a command path.
+  setopt NO_EQUALS
+fi
+
+if [ "$_rc_shell" = bash ]; then
+  # failglob would match zsh's NOMATCH, but it breaks bash-completion
+  # (e.g. tar and ssh completions abort in bash-completion 2.11).
+  # globstar needs bash 4+; macOS /bin/bash is 3.2.
+  shopt -s globstar 2> /dev/null
 fi
 
 # aliases
