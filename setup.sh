@@ -9,6 +9,7 @@ DOTFILES="
   .bash_profile
   .bashrc
   .bin
+  .claude/statusline-command.sh
   .gitconfig
   .inputrc
   .tmux
@@ -71,12 +72,18 @@ for dotfile in $DOTFILES; do
     continue
   fi
 
-  if [ -e "$HOME/$dotfile" ]; then
+  if [ -f "$HOME/$dotfile" ] && cmp -s "$HOME/$dotfile" "$dotfile"; then
+    # Same content as this repository has, so nothing is lost.
+    echo "Replace: $dotfile (identical to the repository's)"
+    rm "$HOME/$dotfile"
+  elif [ -e "$HOME/$dotfile" ]; then
     echo "Backup: $dotfile -> $dotfile.bak (Existing file renamed)"
     mv "$HOME/$dotfile"{,.bak}
   fi
 
-  ln -s "$(pwd)/$dotfile" "$HOME"
+  # Some entries live in a subdirectory, e.g. .claude/statusline-command.sh.
+  mkdir -p "$(dirname "$HOME/$dotfile")"
+  ln -s "$(pwd)/$dotfile" "$HOME/$dotfile"
   echo "Created: $dotfile"
 done
 
