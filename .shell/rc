@@ -106,6 +106,8 @@ if [ "$_rc_shell" = zsh ]; then
   fi
   autoload -Uz compinit
   compinit
+
+  setopt CORRECT
 fi
 
 # aliases
@@ -117,6 +119,8 @@ if [ "$(uname)" = "Darwin" ]; then
   alias nonosleep='sudo pmset -a disablesleep 0'
   alias od='docker-desktop'
   alias qd="osascript -e 'quit app \"Docker Desktop\"'"
+  alias pbc='pbcopy'
+  alias pbp='pbpaste'
 else
   alias ls='ls --color=auto'
 fi
@@ -125,6 +129,20 @@ alias gf='git switch $(basename $(git rev-parse --abbrev-ref origin/HEAD)) && gi
 alias ll='ls -laFh'
 alias vi='vim'
 alias d='dig +noedns'
+alias grep='grep --color=auto'
+# --color needs GNU diffutils 3.4+ or the FreeBSD-based diff of recent macOS.
+if diff --color=auto /dev/null /dev/null > /dev/null 2>&1; then
+  alias diff='diff --color=auto'
+fi
+
+# BSD ls on macOS ignores LS_COLORS; it is set there for zsh's completion list.
+if [ -z "$LS_COLORS" ]; then
+  if command -v dircolors > /dev/null; then
+    eval "$(dircolors -b)"
+  else
+    export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=36;01:cd=33;01:su=31;40;07:sg=36;40;07:tw=32;40;07:ow=33;40;07:'
+  fi
+fi
 
 function mkcd() {
   mkdir -p "$1"
