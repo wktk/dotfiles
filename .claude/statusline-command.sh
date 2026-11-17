@@ -33,10 +33,27 @@ fi
 
 # Build the status line
 # cyan for cwd and green for git as in the zsh prompt, Claude orange for model
-printf "\033[36m%s\033[0m" "$(echo "$cwd" | sed "s|$HOME|~|")"
+dir=$(echo "$cwd" | sed "s|$HOME|~|")
 if [ -n "$branch" ]; then
-  printf " \033[32m%s%s\033[0m" "$branch" "$flags"
+  # As in the shell prompt, when the top-level directory of the work tree ends
+  # with the branch name (e.g. a worktree at .../issues/3290 on branch
+  # issues/3290), that part of the path is shown in the branch color instead
+  # of repeating the name after it.
+  prefix=$(git -C "$cwd" --no-optional-locks rev-parse --show-prefix 2>/dev/null)
+  prefix=${prefix%/}
+  tail="/$branch${prefix:+/$prefix}"
+  case $dir in
+    *"$tail")
+      printf "\033[36m%s/\033[32m%s\033[36m%s\033[32m%s\033[0m" \
+        "${dir%"$tail"}" "$branch" "${prefix:+/$prefix}" "$flags"
+      ;;
+    *)
+      printf "\033[36m%s\033[0m \033[32m%s%s\033[0m" "$dir" "$branch" "$flags"
+      ;;
+  esac
   [ -n "$ahead_behind" ] && printf "%b" "$ahead_behind"
+else
+  printf "\033[36m%s\033[0m" "$dir"
 fi
 printf " \033[38;5;173m%s\033[0m" "$model"
 [ -n "$used" ] && printf " \033[33mctx:%.0f%%\033[0m" "$used"
