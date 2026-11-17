@@ -56,6 +56,9 @@ else
   printf "\033[36m%s\033[0m" "$dir"
 fi
 printf " \033[38;5;173m%s\033[0m" "$model"
+# The statusline JSON has no Remote Control state, but Claude Code sets this
+# variable in its own environment while Remote Control is on.
+[ -n "$CLAUDE_CODE_BRIDGE_SESSION_ID" ] && printf "\033[38;5;173m⇄\033[0m"
 [ -n "$used" ] && printf " \033[33mctx:%.0f%%\033[0m" "$used"
 [ -n "$five_hour" ] && printf " \033[35m5h:%.0f%%\033[0m" "$five_hour"
 [ -n "$seven_day" ] && printf " \033[35m7d:%.0f%%\033[0m" "$seven_day"
