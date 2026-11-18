@@ -5,6 +5,21 @@ model=$(echo "$input" | jq -r '.model.display_name')
 used=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
 five_hour=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
 seven_day=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
+five_hour_reset=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty | floor')
+seven_day_reset=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty | floor')
+
+# Time left until a rate limit window resets: (3h10m), or (1d10h) from 24
+# hours on, rounded down
+remaining() {
+  [ -n "$1" ] || return 0
+  left=$(( $1 - $(date +%s) ))
+  [ "$left" -gt 0 ] || return 0
+  if [ "$left" -ge 86400 ]; then
+    printf "(%dd%dh)" $((left / 86400)) $((left % 86400 / 3600))
+  else
+    printf "(%dh%dm)" $((left / 3600)) $((left % 3600 / 60))
+  fi
+}
 
 # Build git branch segment (skip optional locks)
 branch=$(git -C "$cwd" --no-optional-locks symbolic-ref --short HEAD 2>/dev/null)
@@ -60,5 +75,5 @@ printf " \033[38;5;173m%s\033[0m" "$model"
 # variable in its own environment while Remote Control is on.
 [ -n "$CLAUDE_CODE_BRIDGE_SESSION_ID" ] && printf "\033[38;5;173m⇄\033[0m"
 [ -n "$used" ] && printf " \033[33mctx:%.0f%%\033[0m" "$used"
-[ -n "$five_hour" ] && printf " \033[35m5h:%.0f%%\033[0m" "$five_hour"
-[ -n "$seven_day" ] && printf " \033[35m7d:%.0f%%\033[0m" "$seven_day"
+[ -n "$five_hour" ] && printf " \033[35m5h:%.0f%%%s\033[0m" "$five_hour" "$(remaining "$five_hour_reset")"
+[ -n "$seven_day" ] && printf " \033[35m7d:%.0f%%%s\033[0m" "$seven_day" "$(remaining "$seven_day_reset")"
