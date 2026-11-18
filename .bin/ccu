@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! CRED=$(security find-generic-password -s "Claude Code-credentials" -w 2>/dev/null); then
+  echo "${0##*/}: Claude Code credentials not found in Keychain" >&2
+  exit 1
+fi
+
+# Leave token refresh to Claude Code itself: refresh tokens rotate, so refreshing here could log Claude Code out
+TOKEN=$(jq -r --argjson now "$(date +%s)" '
+  .claudeAiOauth
+  | select(.accessToken and .expiresAt / 1000 > $now + 60)
+  | .accessToken
+' <<<"$CRED")
+if [ -z "$TOKEN" ]; then
+  echo "${0##*/}: access token expired; using Claude Code will refresh it" >&2
+  exit 1
+fi
+
+# Pass the header via stdin rather than argv to keep the token out of ps
+printf 'Authorization: Bearer %s\n' "$TOKEN" \
+| curl -sS --fail-with-body https://api.anthropic.com/api/oauth/usage \
+    -H @- \
+    -H "anthropic-beta: oauth-2025-04-20" \
+| jq -r '.five_hour.utilization // empty'
