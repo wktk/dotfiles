@@ -38,3 +38,4 @@ printf 'Authorization: Bearer %s\n' "$TOKEN" \
   (.five_hour | line("5h")),
   (.seven_day | line("7d"))
 '
+LC_ALL=C date '+now: %b %d %H:%M:%S %z'
