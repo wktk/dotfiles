@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+# Concept: gh api markdown -f mode=gfm -F text=@- > /tmp/gfm.html && open /tmp/gfm.html
+set -euo pipefail
+
+usage() {
+  echo "Usage: ${0##*/} [-o|-p] [PATH|-]" >&2
+  echo "  -o  open in the browser (default when stdout is a terminal)" >&2
+  echo "  -p  print the path instead of opening" >&2
+  exit 2
+}
+
+if [ -t 1 ]; then
+  action=open
+else
+  action=print
+fi
+while getopts op opt; do
+  case $opt in
+    o) action=open ;;
+    p) action=print ;;
+    *) usage ;;
+  esac
+done
+shift $((OPTIND - 1))
+[ $# -le 1 ] || usage
+
+src=${1:--}
+if [ "$src" = - ]; then
+  dir=$PWD
+  title=stdin
+else
+  dir=$(cd "$(dirname "$src")" && pwd -P)
+  title=$(basename "$src")
+fi
+text=$(cat -- "$src")
+if ! [[ $text =~ [^[:space:]] ]]; then
+  echo "${0##*/}: empty input" >&2
+  exit 1
+fi
+repo=$(cd "$dir" && gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null) || repo=
+
+render() {
+  cat <<EOF
+<!doctype html>
+<meta charset="utf-8">
+<title>$(jq -Rr @html <<<"$title")</title>
+<base href="file://$(jq -Rr 'split("/") | map(@uri) | join("/") | @html' <<<"$dir/")">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown.min.css">
+<style>.markdown-body { max-width: 980px; margin: auto; padding: 45px; }</style>
+<script type="module">
+// GitHub draws mermaid in the browser; the API returns it as a highlighted code block
+const blocks = document.querySelectorAll(".highlight-source-mermaid");
+if (blocks.length) {
+  const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.esm.min.mjs");
+  for (const block of blocks) {
+    const div = document.createElement("div");
+    div.className = "mermaid";
+    div.textContent = block.textContent;
+    block.replaceWith(div);
+  }
+  const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+  mermaid.initialize({ startOnLoad: false, theme: dark ? "dark" : "default" });
+  await mermaid.run();
+}
+</script>
+<body class="markdown-body">
+EOF
+  gh api markdown -f mode=gfm -F text=@- -f "context=$repo" <<<"$text"
+}
+
+outdir=${TMPDIR:-/tmp}
+outdir="${outdir%/}/gfm"
+mkdir -p "$outdir"
+out="$outdir/$(date +%s).html"
+if ! render > "$out"; then
+  rm -f "$out"
+  exit 1
+fi
+
+case $action in
+  open) open "$out" ;;
+  print) echo "$out" ;;
+esac
