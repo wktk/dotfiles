@@ -94,6 +94,7 @@ if [ -z "$LANG" ] && locale -a 2> /dev/null | grep -qiE '^en_US\.utf-?8$'; then
   export LANG=en_US.UTF-8
 fi
 export BASH_SILENCE_DEPRECATION_WARNING=1
+export GFM_THEME=light
 
 if [ -z "$LESSOPEN" ] && command -v lesspipe > /dev/null; then
   export LESSOPEN="| /usr/bin/env lesspipe %s 2>&-"

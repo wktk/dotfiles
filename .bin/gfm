@@ -6,8 +6,16 @@ usage() {
   echo "Usage: ${0##*/} [-o|-p] [PATH|-]" >&2
   echo "  -o  open in the browser (default when stdout is a terminal)" >&2
   echo "  -p  print the path instead of opening" >&2
+  echo "Set GFM_THEME to light or dark to override the OS color scheme" >&2
   exit 2
 }
+
+theme=${GFM_THEME:-auto}
+case $theme in
+  auto) css=github-markdown ;;
+  light | dark) css=github-markdown-$theme ;;
+  *) usage ;;
+esac
 
 if [ -t 1 ]; then
   action=open
@@ -45,7 +53,7 @@ render() {
 <meta charset="utf-8">
 <title>$(jq -Rr @html <<<"$title")</title>
 <base href="file://$(jq -Rr 'split("/") | map(@uri) | join("/") | @html' <<<"$dir/")">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/$css.min.css">
 <style>.markdown-body { max-width: 980px; margin: auto; padding: 45px; }</style>
 <script type="module">
 // GitHub draws mermaid in the browser; the API returns it as a highlighted code block
@@ -58,7 +66,8 @@ if (blocks.length) {
     div.textContent = block.textContent;
     block.replaceWith(div);
   }
-  const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+  const theme = "$theme";
+  const dark = theme === "dark" || (theme === "auto" && matchMedia("(prefers-color-scheme: dark)").matches);
   mermaid.initialize({ startOnLoad: false, theme: dark ? "dark" : "default" });
   await mermaid.run();
 }
